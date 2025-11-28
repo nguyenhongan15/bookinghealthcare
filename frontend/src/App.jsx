@@ -1,34 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+// Pages
+import Home from './pages/Home/home'
+import Search from './pages/Search/Search'
+import Specialtypage from './pages/Specialtypage/Specialtypage'
+import Bookingpage from './pages/Booking/Bookingpage'
+import BookingDetail from './pages/Booking/BookingDetail'
+import BookingTicket from './pages/Booking/BookingTicket'
 
+// Components
+import Header from './components/Header/Header'
+import Footer from './components/Footer/Footer'
+
+
+function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="app-root">
+        <Header />
+
+        <main className="app-main">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/tim-kiem" element={<Search />} />
+            <Route path="/kham-chuyen-khoa" element={<Specialtypage />} />
+            <Route path="/bac-si/:slug" element={<Bookingpage />} />
+            <Route path="/dat-lich-kham" element={<BookingDetail />} />
+            <Route path="/phieu-thong-tin" element={<BookingTicket />} />
+
+
+            <Route
+              path="*"
+              element={
+                <div style={{ padding: '40px' }}>
+                  <h2>Không tìm thấy trang</h2>
+                  <Link to="/">Về trang chủ</Link>
+                </div>
+              }
+            />
+          </Routes>
+        </main>
+        <Footer />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </Router>
   )
 }
 
