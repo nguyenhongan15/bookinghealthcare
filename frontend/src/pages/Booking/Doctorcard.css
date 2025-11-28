@@ -1,0 +1,107 @@
+.doctor-card {
+    display: flex;
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  }
+  
+  /******** LEFT ********/
+  
+  .doctor-left {
+    display: flex;
+    gap: 15px;
+    width: 45%;
+  }
+  
+  .doctor-img {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .doctor-info {
+    flex: 1;
+  }
+  
+  .doctor-badge {
+    background: #ffda44;
+    color: #000;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 13px;
+    margin-bottom: 6px;
+    display: inline-block;
+  }
+  
+  .doctor-name {
+    color: #00bcd4;
+    font-size: 20px;
+    margin: 5px 0;
+  }
+  
+  .doctor-desc {
+    color: #444;
+    margin: 5px 0;
+  }
+  
+  .doctor-location {
+    color: #555;
+  }
+  
+  .doctor-viewmore {
+    color: #00bcd4;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  /******** RIGHT ********/
+  
+  .doctor-right {
+    width: 55%;
+    padding-left: 20px;
+    border-left: 1px solid #eee;
+  }
+  
+  .schedule-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .schedule-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .schedule-grid span {
+    background: #efefef;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .schedule-grid span:hover {
+    background: #d8f4ff;
+  }
+  
+  .doctor-address,
+  .doctor-price {
+    margin-top: 20px;
+  }
+  
+  .price-detail {
+    color: #00bcd4;
+    cursor: pointer;
+  }
+  .slot-clickable {
+    cursor: pointer;
+  }
+  
+  .slot-clickable:hover {
+    opacity: 0.8;
+  }
+  

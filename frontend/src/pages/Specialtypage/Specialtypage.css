@@ -1,0 +1,12 @@
+.specialty-page {
+    max-width: 1200px;
+    margin: 35px auto;
+    padding: 0 20px;
+  }
+  
+  .specialty-title {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 25px;
+  }
+  

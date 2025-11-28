@@ -1,0 +1,53 @@
+.booking-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+  }
+  
+  .booking-breadcrumb {
+    font-size: 15px;
+    color: #666;
+  }
+  
+  .booking-breadcrumb .current {
+    color: #00bcd4;
+    font-weight: 600;
+  }
+  
+  .booking-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 15px 0;
+  }
+  
+  .booking-description h3 {
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .booking-description ul {
+    margin-left: 20px;
+    color: #444;
+    line-height: 1.6;
+  }
+  
+  .view-more {
+    display: inline-block;
+    margin-top: 8px;
+    color: #00bcd4;
+    cursor: pointer;
+  }
+  
+  .booking-filters {
+    display: flex;
+    gap: 15px;
+    margin: 25px 0;
+  }
+  
+  .booking-filters select {
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  

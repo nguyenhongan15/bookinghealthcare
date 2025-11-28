@@ -1,0 +1,73 @@
+.schedule-box {
+    background: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .schedule-top {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .arrow {
+    font-size: 12px;
+  }
+  
+  /* Dropdown ngày */
+  .dropdown-days {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    width: fit-content;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  }
+  
+  .dropdown-item {
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  .dropdown-item:hover {
+    background: #f3f3f3;
+  }
+  
+  /* Title */
+  .schedule-title {
+    font-weight: 600;
+    margin-top: 4px;
+  }
+  
+  /* Grid slot */
+  .schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 8px;
+  }
+  
+  .slot {
+    background: #eee;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  /* Register button */
+  .btn-register {
+    padding: 10px 16px;
+    width: 100%;
+    border: none;
+    background: #00bcd4;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    margin-top: 10px;
+  }
+  
