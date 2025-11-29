@@ -2,6 +2,8 @@ import './Home.css'
 import { Link } from "react-router-dom";
 
 import Specialgrid from '../../components/Specialgrid/Specialgrid'
+import ClinicGrid from "../../components/ClinicGrid/ClinicGrid";
+
 
 
 function Home() {
@@ -45,6 +47,17 @@ function Home() {
           <Link to="/kham-chuyen-khoa" className="home-more-btn">Xem thêm</Link>
         </div>
         <Specialgrid limit={4} />
+
+      </section> 
+      
+      {/* Cơ sở y tế */}
+      <section className="home-section">
+        <div className="home-section-header">
+          <h2>Cơ sở y tế</h2>
+          <Link to="/co-so-y-te" className="home-more-btn">Xem thêm</Link>
+        </div>
+
+      <ClinicGrid limit={4} />
 
       </section>
 

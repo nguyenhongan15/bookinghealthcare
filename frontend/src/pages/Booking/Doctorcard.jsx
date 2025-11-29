@@ -27,8 +27,7 @@ function Doctorcard({ name, desc, image, location, schedule }) {
 
         <div className="doctor-address">
           <h4>Địa chỉ khám</h4>
-          <p>Phòng khám Spinetech Clinic</p>
-          <p>Tòa nhà GP, 257 Giải Phóng, Hà Nội</p>
+          
         </div>
 
         <div className="doctor-price">
