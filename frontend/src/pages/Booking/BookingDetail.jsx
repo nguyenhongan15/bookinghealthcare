@@ -3,6 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./BookingDetail.css";
 import api from "../../services/http";
 
+import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
+
+
 
 import {
   FaUser,
@@ -56,6 +59,8 @@ useEffect(() => {
   });
 
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
 
   const districtsData = {
     "Hà Nội": ["Đống Đa", "Ba Đình", "Hoàn Kiếm", "Thanh Xuân", "Cầu Giấy"],
@@ -115,8 +120,7 @@ useEffect(() => {
     if (!validateForm()) return;
   
     try {
-      // Gọi API tạo booking
-      console.log("SELECTED SLOT FE:", selectedSlot);
+      setLoading(true); // bật loading
 
       const res = await api.post("/bookings", {
         patientName: form.fullname,
@@ -139,7 +143,6 @@ useEffect(() => {
       },  
     );
   
-      console.log("Created booking:", res.data);  
       // Sau khi tạo booking thành công → sang trang phiếu
       navigate("/phieu-thong-tin", {
         state: {
@@ -157,9 +160,9 @@ useEffect(() => {
       });
   
     } catch (err) {
-      console.error("Lỗi tạo booking:", err);
-      console.log("Server response:", err.response?.data);
-      alert(err.response?.data?.message || "Không thể đặt lịch. Vui lòng thử lại!");
+      alert("Không thể đặt lịch!");
+    } finally {
+      setLoading(false); // tắt loading khi chuyển trang xong
     }
   };
 
@@ -319,6 +322,7 @@ useEffect(() => {
           </button>
         </div>
       </div>
+      {loading && <LoadingScreen text="Đang xử lý đặt lịch..." />}
     </div>
   );
 }
