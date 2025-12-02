@@ -10,18 +10,29 @@ function ClinicGrid({ limit }) {
     const fetchClinics = async () => {
       try {
         const res = await clinicService.getAllClinics();
-        let data = res.data.data || res.data; // Tùy backend trả ApiResponse hay List
-
+  
+        console.log("RES:", res.data);
+  
+        // --- FIX QUAN TRỌNG ---
+        let data = res.data.data; 
+  
+        if (!Array.isArray(data)) {
+          console.error("❌ API không trả về array:", data);
+          return;
+        }
+  
         if (limit) data = data.slice(0, limit);
-
+  
         setClinics(data);
       } catch (err) {
         console.error("Lỗi load cơ sở y tế:", err);
       }
     };
-
+  
     fetchClinics();
   }, [limit]);
+  
+  
 
   return (
     <div className="clinic-grid">
