@@ -1,0 +1,88 @@
+/* Nền phủ full màn hình */
+.loading-wrapper {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #f8fdfc, #fff8f2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+  }
+  
+  /* Khối chính ở giữa */
+  .loading-center {
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  /* Vòng loading */
+  .loader-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+  
+  /* Hình tròn xanh bên trong */
+  .loader-inner {
+    width: 80px;
+    height: 80px;
+    background: #27c39f;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Icon ở giữa */
+  .loader-icon {
+    font-size: 32px;
+    color: white;
+  }
+  
+  /* Vòng chạy xoay quanh */
+  .loader-circle::after {
+    content: "";
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 5px solid transparent;
+    border-top-color: #27c39f;
+    border-right-color: #27c39f;
+    position: absolute;
+    animation: spin 1.2s linear infinite;
+  }
+  
+  /* Text tiêu đề */
+  .loading-title {
+    font-size: 22px;
+    margin-top: 22px;
+    font-weight: 600;
+    color: #0a2f2a;
+  }
+  
+  /* Sub text */
+  .loading-subtitle {
+    font-size: 15px;
+    margin-top: 4px;
+    opacity: 0.7;
+    color: #2d4741;
+  }
+  
+  /* Animation */
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
