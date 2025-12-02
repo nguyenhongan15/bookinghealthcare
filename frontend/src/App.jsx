@@ -6,9 +6,13 @@ import Home from './pages/Home/home'
 import Search from './pages/Search/Search'
 import Specialtypage from './pages/Specialtypage/Specialtypage'
 import ClinicPage from './pages/Clinicpage/Clinicpage'
+import ClinicDetail from './pages/Clinicpage/ClinicDetail'
 import Bookingpage from './pages/Booking/Bookingpage'
 import BookingDetail from './pages/Booking/BookingDetail'
 import BookingTicket from './pages/Booking/BookingTicket'
+import DoctorDetail from './pages/DoctorDetail/DoctorDetail'
+import BookingDoctorPage from "./pages/Booking/BookingDoctorPage";
+
 
 // Components
 import Header from './components/header/Header'
@@ -26,10 +30,20 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/tim-kiem" element={<Search />} />
             <Route path="/kham-chuyen-khoa" element={<Specialtypage />} />
+
+
             <Route path="/co-so-y-te" element={<ClinicPage />} />
+            <Route path="/co-so-y-te/:id" element={<ClinicDetail />} />
+
             <Route path="/bac-si/:slug" element={<Bookingpage />} />
+            <Route path="/chuyen-khoa/:slug" element={<Bookingpage />} />
+
             <Route path="/dat-lich-kham" element={<BookingDetail />} />
+            <Route path="/dat-lich-kham/bac-si/:id" element={<BookingDoctorPage />} />
+
             <Route path="/phieu-thong-tin" element={<BookingTicket />} />
+
+            <Route path="/bac-si/thong-tin/:id" element={<DoctorDetail />} />
 
 
             <Route

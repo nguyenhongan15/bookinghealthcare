@@ -63,12 +63,12 @@ function BookingTicket() {
 
         <div className="ticket-row">
           <span>Nơi khám</span>
-          <strong>Phòng khám Spinetech Clinic</strong>
+          <strong>{ticket.clinic?.name}</strong>
         </div>
 
         <div className="ticket-row">
           <span>Địa chỉ</span>
-          <strong>Tòa nhà GP, 257 Giải Phóng, Hà Nội</strong>
+          <strong>{ticket.clinic?.address}</strong>
         </div>
 
         <div className="ticket-note">

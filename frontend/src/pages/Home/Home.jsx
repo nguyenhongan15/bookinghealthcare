@@ -13,7 +13,7 @@ function Home() {
       <section className="home-banner" id="tai-nha">
         <div className="home-banner-inner">
           <h1 className="home-banner-title">
-            Đặt lịch khám bệnh, tư vấn sức khoẻ từ xa và làm đẹp
+            Đặt lịch khám bệnh, tư vấn sức khoẻ từ xa 
           </h1>
 
           <div className="home-search-box">

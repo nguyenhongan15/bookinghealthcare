@@ -1,107 +1,248 @@
+/* ======================= PAGE LAYOUT ======================= */
+.speciality-page {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 35px 20px 80px;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Title */
+.speciality-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.speciality-desc {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 40px;
+}
+
+/* ======================= DOCTOR CARD ======================= */
 .doctor-card {
-    display: flex;
-    background: #fff;
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 25px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-  }
-  
-  /******** LEFT ********/
-  
-  .doctor-left {
-    display: flex;
-    gap: 15px;
-    width: 45%;
-  }
-  
-  .doctor-img {
-    width: 110px;
-    height: 110px;
-    object-fit: cover;
-    border-radius: 50%;
-  }
-  
-  .doctor-info {
-    flex: 1;
-  }
-  
-  .doctor-badge {
-    background: #ffda44;
-    color: #000;
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 13px;
-    margin-bottom: 6px;
-    display: inline-block;
-  }
-  
-  .doctor-name {
-    color: #00bcd4;
-    font-size: 20px;
-    margin: 5px 0;
-  }
-  
-  .doctor-desc {
-    color: #444;
-    margin: 5px 0;
-  }
-  
-  .doctor-location {
-    color: #555;
-  }
-  
-  .doctor-viewmore {
-    color: #00bcd4;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  /******** RIGHT ********/
-  
-  .doctor-right {
-    width: 55%;
-    padding-left: 20px;
-    border-left: 1px solid #eee;
-  }
-  
-  .schedule-title {
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
-  
-  .schedule-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  
-  .schedule-grid span {
-    background: #efefef;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  
-  .schedule-grid span:hover {
-    background: #d8f4ff;
-  }
-  
-  .doctor-address,
-  .doctor-price {
-    margin-top: 20px;
-  }
-  
-  .price-detail {
-    color: #00bcd4;
-    cursor: pointer;
-  }
-  .slot-clickable {
-    cursor: pointer;
-  }
-  
-  .slot-clickable:hover {
-    opacity: 0.8;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 10px;
+  padding: 25px 28px;
+  margin-bottom: 28px;
+  gap: 25px;
+  border: 1px solid #e8e8e8;
+
+  transition: 0.2s ease;
+}
+.doctor-card:hover {
+  box-shadow: 0 3px 10px rgba(0,0,0,0.09);
+}
+
+/* ======================= LEFT SIDE ======================= */
+.doctor-left {
+  display: flex;
+  gap: 18px;
+}
+
+.doctor-img {
+  width: 105px;
+  height: 105px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.doctor-info {
+  margin-top: 3px;
+}
+
+/* Badge YÊU THÍCH */
+.doctor-badge {
+  display: inline-block;
+  background: #ffe79c;
+  color: #a55b00;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.doctor-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0077c2;
+  margin-bottom: 6px;
+}
+
+.doctor-desc {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.doctor-location {
+  font-size: 14px;
+  color: #333;
+}
+
+.doctor-viewmore {
+  font-size: 14px;
+  color: #0077c2;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+/* ======================= RIGHT SIDE ======================= */
+.doctor-right {
+  width: 600px;
+  background: #fafcff;
+  border-left: 1px solid #ebebeb;
+  padding-left: 25px;
+}
+
+/* ======= TOP (DAY DROPDOWN) ======= */
+.schedule-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  padding-bottom: 6px;
+}
+
+.dropdown-days {
+  background: #fff;
+  border: 1px solid #dfe9f3;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.dropdown-item:hover {
+  background: #eef7ff;
+}
+
+/* ======= SCHEDULE ======= */
+.schedule-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  margin: 12px 0 10px;
+  font-size: 14px;
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.slot {
+  padding: 8px 0;
+  text-align: center;
+  border-radius: 6px;
+  background: #f0f2f5;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+.slot:hover {
+  background: #cfe9ff;
+  color: #0077c2;
+}
+
+/* Slot note */
+.schedule-note {
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 15px;
+}
+
+/* ======= PRICE & ADDRESS ======= */
+.doctor-address,
+.doctor-price {
+  margin-top: 10px;
+}
+
+.doctor-address h4,
+.doctor-price h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.price-detail {
+  color: #0077c2;
+  cursor: pointer;
+}
+
+/* --- CARD CONTAINER --- */
+.doctor-info-card {
+  background: #ffffff;
+  padding: 20px 28px;
+  border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  border: 1px solid #f1f1f1;
+}
+
+/* --- SECTION TITLE --- */
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* --- SECTION CONTENT TEXTS --- */
+.section-content {
+  font-size: 15px;
+  color: #555;
+  padding-left: 4px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  border-left: 3px solid #6ec8ef;
+}
+
+/* --- PRICE --- */
+.section-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: #3575e2;
+  margin-top: 4px;
+}
+
+.price-detail {
+  font-size: 14px;
+  color: #0099cc;
+  cursor: pointer;
+  padding-left: 8px;
+}
+
+.price-detail:hover {
+  text-decoration: underline;
+}
+
+/* Gộp section để tạo khoảng cách đều */
+.section:not(:last-child) {
+  margin-bottom: 26px;
+}
+
+.doctor-link {
+  cursor: pointer;
+  color: #1a73e8;
+  transition: 0.2s;
+}
+
+.doctor-link:hover {
+  text-decoration: underline;
+  color: #1257b0;
+}
+

@@ -25,7 +25,7 @@ function Header() {
 
         <nav className="bc-nav">
           <NavLink to="/" className="bc-nav-item">
-            Tất cả
+            Trang chủ
           </NavLink>
           <a className="bc-nav-item" href="#tai-nha">
             Tại nhà
@@ -34,7 +34,7 @@ function Header() {
             Tại viện
           </a>
           <a className="bc-nav-item" href="#song-khoe">
-            Sống khỏe
+            Bài viết
           </a>
         </nav>
 
