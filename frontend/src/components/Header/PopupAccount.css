@@ -1,0 +1,80 @@
+/* Overlay để click ra ngoài */
+.acc-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 900;
+  }
+  
+  /* Popup nằm theo vị trí nút profile */
+  .acc-popup {
+    position: fixed;
+    transform: translateX(-50%); /* 📌 Đưa tâm popup về đúng giữa icon */
+    width: 260px;
+    background: #fff;
+    padding: 14px 16px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+    z-index: 1000; /* 📌 cao hơn overlay */
+    animation: fadeIn 0.15s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  
+  /* Header thông tin user */
+  .acc-header {
+    display: flex;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .acc-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #00bcd4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+  }
+  
+  /* Text info */
+  .acc-name {
+    font-weight: 600;
+    color: #00bcd4;
+  }
+  .acc-email {
+    font-size: 13px;
+    color: #666;
+  }
+  
+  /* Buttons */
+  .acc-btn {
+    width: 100%;
+    border: none;
+    background: #f4feff;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+  }
+  
+  .acc-btn:hover {
+    background: #e0fbff;
+  }
+  
+  .logout {
+    background: #ffecec;
+    color: #d32f2f;
+  }
+  .logout:hover {
+    background: #ffc9c9;
+  }
+  

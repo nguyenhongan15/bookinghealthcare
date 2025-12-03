@@ -1,16 +1,40 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useParams, Link } from "react-router-dom";
-import "./DoctorDetail.css";
-import { doctorService } from "../../services/doctorService";
-import { scheduleService } from "../../services/scheduleService";
 
-function DoctorDetail() {
+import "./DoctorDetail.css";
+
+import { doctorService } from "../../services/doctorService";
+import { scheduleService } from "../../services/scheduleService"; 
+
+import RegisterLoginPopup from "../Auth/RegisterLoginPopup"; // VỪA THÊM VÀO
+
+function DoctorDetail({ onStartChat }) {
   const { id } = useParams();
   const [doctor, setDoctor] = useState(null);
-  const [days, setDays] = useState([]);
   const [selectedDayId, setSelectedDayId] = useState(null);
-  const navigate = useNavigate();
+
+
+  const [days, setDays] = useState([]);
+  const [slotsMap, setSlotsMap] = useState({});
+
+  // VỪA THÊM VÀO 4 DÒNG NÀY
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const rawUser = localStorage.getItem("user");
+  const user = rawUser ? JSON.parse(rawUser) : null;
+  const role = user?.role || null;
+
+  const handleChatClick = () => {
+    if (!user) {
+      localStorage.setItem("pending_chat_doctor", doctor.id);
+      setShowLoginPopup(true);
+      return;
+    }
+
+    if (role !== "DOCTOR" && onStartChat) {
+      onStartChat(doctor);
+    }
+  };
+
 
   useEffect(() => {
     const fetchDoctor = async () => {
@@ -33,7 +57,6 @@ function DoctorDetail() {
         console.error("Lỗi load schedule days:", err);
       }
     };
-
     fetchDoctor();
     fetchScheduleDays();
   }, [id]);
@@ -49,15 +72,12 @@ function DoctorDetail() {
         console.error("Lỗi load slots:", err);
       }
     };
-
     fetchSlots();
   }, [selectedDayId]);
 
   if (!doctor) {
     return <div style={{ padding: 40 }}>Đang tải thông tin bác sĩ...</div>;
   }
-
-  
 
   return (
     <div className="doctor-detail-page">
@@ -85,7 +105,6 @@ function DoctorDetail() {
         </div>
       </div>
 
-        {/* 🔥 THAY LỊCH KHÁM BẰNG THÀNH TÍCH / ACHIEVEMENT */}
         <div className="doctor-detail-achievement">
             <h2>Giới thiệu sơ lược về bác sĩ</h2>
 
@@ -96,16 +115,25 @@ function DoctorDetail() {
         )}
         </div>
 
-
+      {role !== "DOCTOR" && (
         <div className="dat-lich-kham">
-            <Link to={`/dat-lich-kham/bac-si/${doctor.id}`} 
-            /*<Link to="/dat-lich-kham" state={{ doctor }}*/
-            
-            >  
-                Đặt lịch khám với bác sĩ
-            </Link>
+          <Link to={`/dat-lich-kham/bac-si/${doctor.id}`}>
+            Đặt lịch khám với bác sĩ
+          </Link>
 
+          <button className="btn-chat" onClick={handleChatClick}>
+            Trò chuyện với bác sĩ
+          </button> 
         </div>
+      )}
+       {showLoginPopup && (
+        <RegisterLoginPopup
+          onClose={() => setShowLoginPopup(false)}
+          onUpdated={() => {
+            window.location.reload();
+          }}
+        />
+      )}
     </div>
   );
 }

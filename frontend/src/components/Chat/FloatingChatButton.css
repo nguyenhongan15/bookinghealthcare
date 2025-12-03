@@ -1,0 +1,20 @@
+.floating-chat-btn {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #00c8d2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    z-index: 1500;
+  }
+  .floating-chat-btn .chat-icon {
+    font-size: 24px;
+    color: #fff;
+  }
+  

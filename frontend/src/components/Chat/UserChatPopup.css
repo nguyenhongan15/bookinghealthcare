@@ -1,0 +1,175 @@
+.chat-popup {
+    position: fixed;
+    bottom: 24px;
+    right: 100px;
+    width: 750px;
+    height: 520px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    display: flex;
+    overflow: hidden;
+    z-index: 1600;
+    animation: fadeIn 0.2s ease-out;
+    font-family: sans-serif;
+  }
+  
+  /* Sidebar trái */
+  .chat-left {
+    width: 260px;
+    background: #f6f7f9;
+    border-right: 1px solid #e2e2e2;
+    padding: 15px;
+    overflow-y: auto;
+  }
+  
+  .chat-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  
+  .chat-partner {
+    display: flex;
+    align-items: center;
+    padding: 8px 6px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+    gap: 10px;
+  }
+  
+  .chat-partner img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .chat-partner:hover {
+    background: #e9eef6;
+  }
+  
+  .chat-partner.active {
+    background: #d6e4ff;
+  }
+  
+  .chat-partner div {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .badge-booked {
+    background: #00c853;
+    color: white;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    width: fit-content;
+    margin-top: 3px;
+  }
+  
+  /* Khung chat phải */
+  .chat-right {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .empty-chat {
+    margin: auto;
+    color: #888;
+    font-size: 16px;
+  }
+  
+  .chat-header {
+    padding: 12px 18px;
+    font-size: 17px;
+    font-weight: 600;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #fdfdfd;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  /* bubble chat */
+  .bubble {
+    max-width: 70%;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 15px;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+  
+  .bubble.me {
+    align-self: flex-end;
+    background: #4e8cff;
+    color: white;
+  }
+  
+  .bubble.them {
+    align-self: flex-start;
+    background: #e5e5e5;
+    color: #333;
+  }
+  
+  .chat-input {
+    padding: 12px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .chat-input input {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+  }
+  
+  .chat-input button {
+    padding: 10px 16px;
+    background: #4e8cff;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+  }
+  
+  .chat-input button:hover {
+    background: #3c73d9;
+  }
+  
+  /* Nút đóng */
+  .close-btn {
+    position: absolute;
+    top: 8px;
+    right: 14px;
+    font-size: 26px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #aaa;
+  }
+  
+  .close-btn:hover {
+    color: #444;
+  }
+  
+  /* Animation */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  

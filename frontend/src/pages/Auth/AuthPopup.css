@@ -1,0 +1,135 @@
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup-container {
+  width: 860px;
+  height: 600px;
+  background: #fff;
+  border-radius: 18px;
+  display: flex;
+  overflow: hidden;
+  animation: popupAppear 0.3s ease-out;
+  border: 10px solid #ffc5c5;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.18);
+}
+
+@keyframes popupAppear {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* LEFT IMAGE */
+.popup-left {
+  flex: 1;
+  background: #ffe8ec;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* RIGHT SECTION */
+.popup-right {
+  width: 380px;
+  padding: 30px;
+  position: relative;
+}
+
+.popup-right-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup-right-header h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.close-btn {
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.popup-right-body {
+  margin-top: 20px;
+}
+
+label {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 14px;
+}
+
+.primary-btn {
+  width: 100%;
+  padding: 12px;
+  background: #00bcd4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: #ff6363;
+}
+
+.switch-text {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.switch-text span {
+  color: #00a6d6;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
+
+.input-rel {
+  position: relative;
+}
+
+.spinner {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  width: 17px;
+  height: 17px;
+  transform: translateY(-50%);
+  border: 2px solid #00C8D2;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

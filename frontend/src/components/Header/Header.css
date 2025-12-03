@@ -1,141 +1,118 @@
 .bc-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 64px;
-    background-color: #e0fbff;
-    border-bottom: 1px solid #d4f2f8;
-    z-index: 100;
-  }
-  
-  .bc-header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 24px;
-  }
-  
-  /* Logo + hamburger */
-  
-  .bc-logo-area {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  
-  .bc-hamburger {
-    width: 24px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  
-  .bc-hamburger span {
-    height: 2px;
-    border-radius: 999px;
-    background-color: #008caa;
-  }
-  
-  .bc-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  .bc-logo-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, #00bcd4, #4dd0e1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-weight: 700;
-    font-size: 20px;
-  }
-  
-  .bc-logo-text {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .bc-logo-main {
-    font-weight: 700;
-    color: #00bcd4;
-  }
-  
-  .bc-logo-sub {
-    font-size: 12px;
-    color: #666;
-  }
-  
-  /* Menu */
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background-color: #e0fbff;
+  border-bottom: 1px solid #d4f2f8;
+  z-index: 1000;
+}
+
+.bc-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+/* LOGO AREA */
+.bc-logo-area {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.bc-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.bc-logo-image {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #fff;
+}
+
+.bc-logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.bc-logo-main {
+  font-weight: 700;
+  color: #00bcd4;
+}
+
+.bc-logo-sub {
+  font-size: 12px;
+  color: #666;
+}
+
+/* NAV */
+.bc-nav {
+  display: flex;
+  gap: 24px;
+  font-size: 14px;
+}
+
+.bc-nav-item {
+  text-decoration: none;
+  color: #333;
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+.bc-nav-item:hover,
+.bc-nav-item.active {
+  background-color: #ffeb99;
+}
+
+/* ACTIONS */
+.bc-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+}
+
+.bc-header-link {
+  text-decoration: none;
+  color: #00bcd4;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bc-header-btn {
+  border-radius: 999px;
+  border: none;
+  background-color: #00bcd4;
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.bc-header-btn:hover {
+  background-color: #0097a7;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
   .bc-nav {
-    display: flex;
-    gap: 24px;
-    font-size: 14px;
+    display: none;
   }
-  
-  .bc-nav-item {
-    text-decoration: none;
-    color: #333;
-    padding: 6px 10px;
-    border-radius: 999px;
-  }
-  
-  .bc-nav-item:hover,
-  .bc-nav-item.active {
-    background-color: #ffeb99;
-  }
-  
-  /* Actions */
-  
-  .bc-header-actions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    font-size: 14px;
-  }
-  
-  .bc-header-link {
-    text-decoration: none;
-    color: #00bcd4;
-  }
-  
-  .bc-header-btn {
-    border-radius: 999px;
-    border: none;
-    background-color: #00bcd4;
-    color: #fff;
-    padding: 8px 16px;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  
-  .bc-header-btn:hover {
-    background-color: #0097a7;
-  }
-  
-  @media (max-width: 768px) {
-    .bc-nav {
-      display: none;
-    }
-  }
-  
-  .bc-logo-image {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    object-fit: cover;
-    background: #fff;
-  }
-  
+}
