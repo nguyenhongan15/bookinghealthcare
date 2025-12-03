@@ -25,4 +25,5 @@ public class BookingRequest {
 
     private String nameclinic;
     private String addressclinic;
+    private Long userAccountId;
 }

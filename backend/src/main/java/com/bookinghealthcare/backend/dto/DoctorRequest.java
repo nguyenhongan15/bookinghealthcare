@@ -11,4 +11,6 @@ public class DoctorRequest {
     private String location;
     private Integer specialityId;   // Frontend gửi ID chuyên khoa
     private Integer clinicId;
+    private String email;
+
 }

@@ -26,4 +26,6 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
         LocalDate date,
         List<BookingStatus> statuses
     );
+    boolean existsByDoctor_IdAndUserAccountId(Integer doctorId, Long userAccountId);
+
 }
