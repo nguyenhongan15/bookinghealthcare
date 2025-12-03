@@ -27,18 +27,15 @@ public class UserAccountService {
                                                         String email,
                                                         String phone) {
 
-        // username từ fullname
         String baseUsername = UsernameUtils.toUsername(fullName);
         String username = baseUsername;
         int suffix = 1;
 
-        // nếu username trùng -> thêm số
         while (repo.existsByUsername(username)) {
                 username = baseUsername + suffix;
                 suffix++;
         }
 
-        // password = số điện thoại
         String rawPass = phone;
 
         UserAccount account = UserAccount.builder()

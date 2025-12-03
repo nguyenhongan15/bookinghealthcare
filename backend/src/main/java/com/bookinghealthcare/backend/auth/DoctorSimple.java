@@ -14,13 +14,13 @@ import java.time.LocalDateTime;
 public class DoctorSimple {
 
     @Id
-    private Long id;            // trùng với id của UserAccount
+    private Long id;
 
     private String username;
     private String fullName;
     private String email;
 
-    private Integer doctorId;   // map sang bảng Doctor nếu cần
+    private Integer doctorId;
 
     private LocalDateTime createdAt;
 }
