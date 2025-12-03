@@ -35,7 +35,10 @@ public class Doctor {
 
     @ManyToOne
     @JoinColumn(name = "clinic_id")
-    // @JsonIgnoreProperties({"clinic", "speciality"}) // NẾU SAI THÌ LẤY LẠI DÒNG NÀY
-    @JsonIgnoreProperties({"doctors"})   // DÒNG NÀY LÀ DÒNG MỚI THÊM
+    @JsonIgnoreProperties({"doctors"})
     private Clinic clinic;
+
+    @Column(name = "login_username")
+    private String loginUsername;
+
 }

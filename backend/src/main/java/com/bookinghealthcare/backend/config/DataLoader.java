@@ -13,14 +13,25 @@ import com.bookinghealthcare.backend.repository.SpecialityRepository;
 import com.bookinghealthcare.backend.utils.ExcelImporter;
 import jakarta.annotation.PostConstruct;
 
+import com.bookinghealthcare.backend.auth.UserAccount;
+import com.bookinghealthcare.backend.auth.UserAccountRepository;
+import com.bookinghealthcare.backend.auth.DoctorSimple;
+import com.bookinghealthcare.backend.auth.DoctorSimpleRepository;
+import com.bookinghealthcare.backend.auth.Role;
+import com.bookinghealthcare.backend.utils.UsernameUtils;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Component;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+
+
 public class DataLoader {
 
     private final ClinicRepository clinicRepo;
@@ -29,7 +40,37 @@ public class DataLoader {
     private final ScheduleDayRepository scheduleDayRepo;
     private final ScheduleSlotRepository scheduleSlotRepo;
 
+    private final UserAccountRepository userAccountRepo;
+    private final PasswordEncoder passwordEncoder;
+
+    private final DoctorSimpleRepository doctorSimpleRepo;
+
+    //=================VỪA THÊM VÀO================================
+    private final UserAccountRepository userAccountRepository;
+    private final DoctorRepository doctorRepository;
+
+    //==============================================================
+
     @PostConstruct
+
+    //======================VỪA THÊM VÀO===================================
+    private void linkDoctorsWithAccounts() {
+        List<Doctor> doctors = doctorRepository.findAll();
+    
+        for (Doctor d : doctors) {
+            if (d.getLoginUsername() == null) continue;
+    
+            userAccountRepository.findByUsername(d.getLoginUsername())
+                .ifPresent(acc -> {
+                    acc.setDoctorId(d.getId());
+                    userAccountRepository.save(acc);
+                    System.out.println("🔗 Linked doctor " 
+                            + d.getName() + " → user " + acc.getUsername());
+                });
+        }
+    }
+    //===================================================================
+
     public void init() {
         System.out.println("========== DATA LOADER ==========");
 
@@ -41,7 +82,7 @@ public class DataLoader {
         System.out.println("========== IMPORT DONE ==========");
     }
 
-    // ========================== SPECIALITY ==========================
+
     private void loadSpecialities() {
         
         String path = "data/speciality/specialities.xlsx";
@@ -77,10 +118,7 @@ public class DataLoader {
         System.out.println("✅ Specialities imported");
     }
 
-    // ============================ CLINIC ==============================
     private void loadClinics() {
-
-
         String path = "data/clinics/clinic_data.xlsx";
         List<List<String>> rows = ExcelImporter.readExcel(path);
 
@@ -110,7 +148,6 @@ public class DataLoader {
         System.out.println("✅ Clinics imported");
     }
 
-    // ============================ DOCTOR ==============================
     private void loadDoctors() {
 
         String path = "data/doctors/doctors.xlsx";
@@ -154,6 +191,7 @@ public class DataLoader {
             d.setExpertise(r.get(2));
             d.setLocation(r.get(3));
             d.setImage(r.get(4));
+
             String achievement = null;
             if (r.size() > 7 && r.get(7) != null && !r.get(7).trim().isEmpty()) {
                 achievement = r.get(7).trim();
@@ -164,9 +202,43 @@ public class DataLoader {
             d.setSpeciality(speciality);
 
             doctorRepo.save(d);
-        }
 
+            // Tạo login_username
+            String username = UsernameUtils.generateUniqueUsername(
+                name,
+                uname -> userAccountRepo.findByUsername(uname).isPresent()
+            );
+        
+            d.setLoginUsername(username);
+            doctorRepo.save(d);
+
+            String passwordRaw = username + "123";
+
+            UserAccount doctorAcc = UserAccount.builder()
+                .username(username)
+                .password(passwordEncoder.encode(passwordRaw))
+                .role(Role.DOCTOR)
+                .fullName(name)
+                .doctorId(d.getId())
+                .createdAt(LocalDateTime.now())
+                .build();
+
+            userAccountRepo.save(doctorAcc);
+
+            DoctorSimple ds = DoctorSimple.builder()
+                .id(doctorAcc.getId())
+                .username(doctorAcc.getUsername())
+                .fullName(doctorAcc.getFullName())
+                .email(null)
+                .doctorId(doctorAcc.getDoctorId())
+                .createdAt(doctorAcc.getCreatedAt())
+                .build();
+
+            doctorSimpleRepo.save(ds);
+        }
         System.out.println("✅ Doctors imported");
+        linkDoctorsWithAccounts(); // VỪA THÊM VÀO
+
     }
 
     private void loadDoctorSchedule() {
@@ -219,7 +291,4 @@ public class DataLoader {
     
         System.out.println("✅ Schedule imported from Excel");
     }
-    
-    
-
 }

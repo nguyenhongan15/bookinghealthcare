@@ -46,4 +46,8 @@ public class Booking {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDate date;
+
+    @Column(name = "user_account_id")
+    private Long userAccountId;
+
 }

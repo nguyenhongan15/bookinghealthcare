@@ -141,4 +141,73 @@ public class EmailService {
             throw new RuntimeException("Failed to send email", e);
         }
     }
+
+    // 🟢 1. Gửi email tài khoản USER
+    public void sendUserAccountEmail(String toEmail, String fullName, String username, String password) {
+
+        String subject = "Thông báo tạo tài khoản BookingHealthcare";
+
+        String html = """
+            <div style="font-family: Arial, sans-serif; width: 450px; background: #ffffff; 
+                        border-radius: 10px; padding: 30px; border: 1px solid #e0e6ed;">
+
+                <h2 style="text-align:center; color:#00C8D2;">TÀI KHOẢN ĐƯỢC TẠO THÀNH CÔNG</h2>
+
+                <p>Xin chào <strong>%s</strong>,</p>
+
+                <p>Bạn đã được tạo tài khoản trên hệ thống <strong>BookingHealthcare</strong>.</p>
+
+                <p>Thông tin tài khoản:</p>
+                <ul>
+                    <li><strong>Tên đăng nhập:</strong> %s</li>
+                    <li><strong>Mật khẩu:</strong> %s</li>
+                </ul>
+
+                <p>Vui lòng đăng nhập và đổi mật khẩu để bảo mật.</p>
+
+                <p style="text-align:center; margin-top:10px; color:#6c757d;">
+                    Cảm ơn bạn đã sử dụng hệ thống.
+                </p>
+            </div>
+            """;
+
+        html = String.format(html, fullName, username, password);
+            sendHtmlEmail(toEmail, subject, html);
+    }
+
+    // 🟢 2. Gửi email tài khoản DOCTOR
+    public void sendDoctorAccountEmail(String toEmail, String fullName, String username, String password) {
+
+        String subject = "Thông báo tài khoản dành cho Bác sĩ - BookingHealthcare";
+
+        String html = """
+            <div style="font-family: Arial, sans-serif; width: 450px; background: #ffffff; 
+                        border-radius: 10px; padding: 30px; border: 1px solid #e0e6ed;">
+
+                <h2 style="text-align:center; color:#00C8D2;">TÀI KHOẢN BÁC SĨ</h2>
+
+                <p>Xin chào BS <strong>%s</strong>,</p>
+
+                <p>Hệ thống đã tạo tài khoản dành cho bác sĩ để quản lý lịch khám và trò chuyện với bệnh nhân.</p>
+
+                <p>Thông tin tài khoản:</p>
+                <ul>
+                    <li><strong>Tên đăng nhập:</strong> %s</li>
+                    <li><strong>Mật khẩu:</strong> %s</li>
+                    </ul>
+
+                <p>Vui lòng đăng nhập và đổi mật khẩu để bảo mật.</p>
+
+                <p style="text-align:center; margin-top:10px; color:#6c757d;">
+                    Trân trọng,<br>BookingHealthcare
+                </p>
+            </div>
+            """;
+
+        html = String.format(html, fullName, username, password);
+            sendHtmlEmail(toEmail, subject, html);
+    }
+
 }
+
+

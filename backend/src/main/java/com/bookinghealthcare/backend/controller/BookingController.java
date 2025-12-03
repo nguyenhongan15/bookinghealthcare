@@ -6,6 +6,9 @@ import com.bookinghealthcare.backend.dto.BookingStatusRequest;
 import com.bookinghealthcare.backend.entity.*;
 import com.bookinghealthcare.backend.repository.*;
 import com.bookinghealthcare.backend.service.EmailService;
+import com.bookinghealthcare.backend.auth.UserAccount;
+import com.bookinghealthcare.backend.auth.UserAccountService;
+
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +29,9 @@ public class BookingController {
     private final ScheduleSlotRepository scheduleSlotRepository;
     private final EmailService emailService; 
 
-    // =========================
+    private final UserAccountService userAccountService;
+
     // 1. Tạo booking mới
-    // =========================
     @PostMapping
     public ApiResponse<?> createBooking(@RequestBody BookingRequest req) {
 
@@ -44,9 +47,6 @@ public class BookingController {
         ScheduleSlot slot = scheduleSlotRepository.findById(req.getScheduleSlotId())
                 .orElseThrow(() -> new RuntimeException("Schedule slot not found"));
 
-        // Lấy ngày
-        //ScheduleDay day = slot.getScheduleDay();
-
         // Kiểm tra slot đã có booking PENDING/CONFIRMED chưa
         boolean taken = bookingRepository.existsByScheduleSlot_IdAndStatusIn(
                 req.getScheduleSlotId(),
@@ -56,7 +56,19 @@ public class BookingController {
             throw new RuntimeException("Khung giờ này đã có người đặt rồi");
         }
 
-        
+        UserAccount account;
+
+        if (req.getUserAccountId() != null) {
+        // 🟢 User đã đăng nhập -> lấy user cũ
+        account = userAccountService.getById(req.getUserAccountId());
+        } else {
+        // 🔵 User chưa đăng nhập -> tạo tài khoản mới
+            account = userAccountService.createUserAccountWhenGuestBooking(
+                req.getPatientName(),
+                req.getEmail(),
+                req.getPatientPhone()
+            );
+        }
 
         // Lưu booking
         Booking booking = new Booking();
@@ -68,25 +80,91 @@ public class BookingController {
         booking.setScheduleSlot(slot);
         booking.setStatus(BookingStatus.PENDING);
         booking.setDate(LocalDate.parse(req.getDate()));
-
-
+        
+        booking.setUserAccountId(account.getId());
         bookingRepository.save(booking);
 
-        // GỬI EMAIL XÁC NHẬN
-        if (req.getEmail() != null && !req.getEmail().isEmpty()) {
+        // NẾU SAI QUÁ THÌ BỎ ==================================================================================
+        String bookingEmail = req.getEmail();      // email trong form đặt lịch
+        boolean needAccountEmail = false;          // có cần gửi email tạo tài khoản không
+
+        // 1 ƯU TIÊN CẬP NHẬT EMAIL VÀ GỬI MAIL TẠO TK NẾU USER TRƯỚC GIỜ CHƯA CÓ EMAIL
+        if (bookingEmail != null && !bookingEmail.isBlank()) {
+
+            if (account.getEmail() == null || account.getEmail().isBlank()) {
+                // Trước đây user chưa có email -> cập nhật email từ booking
+                account.setEmail(bookingEmail);
+
+                if (!account.isWelcomeEmailSent()) {
+                    needAccountEmail = true;   // sẽ gửi mail tạo tài khoản
+                }
+            } else {
+                // User đã có email sẵn từ trước
+                bookingEmail = account.getEmail(); // dùng email account cho đồng nhất
+            }
+        } else {
+            // Nếu form booking KHÔNG gửi email nhưng account đã có email từ trước
+            if (account.getEmail() != null && !account.getEmail().isBlank()) {
+                bookingEmail = account.getEmail();
+            }
+        }
+        // 2️ GỬI EMAIL TẠO TÀI KHOẢN (chỉ 1 lần duy nhất)
+        if (bookingEmail != null && !bookingEmail.isBlank() && needAccountEmail) {
+            try {
+                emailService.sendUserAccountEmail(
+                        bookingEmail,
+                        req.getPatientName(),
+                        account.getUsername(),
+                        req.getPatientPhone()
+                );
+                account.setWelcomeEmailSent(true);
+                userAccountService.save(account); // nhớ có hàm save hoặc update trong UserAccountService
+            } catch (Exception e) {
+                System.out.println("⚠ Không gửi được email tạo tài khoản khi booking: " + e.getMessage());
+            }
+        }
+        // 3️ GỬI PHIẾU KHÁM BỆNH (nếu có email để gửi)
+        if (bookingEmail != null && !bookingEmail.isBlank()) {
             emailService.sendBookingEmail(
-                    req.getEmail(),                  
-                    req.getPatientName(), 
+                    bookingEmail,
+                    req.getPatientName(),
                     req.getGender(),
                     String.valueOf(req.getBirthyear()),
                     req.getPatientPhone(),
-                    doctor.getName(),                  
+                    doctor.getName(),
                     req.getDate(),
                     slot.getSlot(),
                     doctor.getClinic().getName(),
-                    doctor.getClinic().getAddress()              
+                    doctor.getClinic().getAddress()
             );
         }
+
+
+        // // GỬI EMAIL XÁC NHẬN ============================ NẾU SAI QUA THÌ LẤY LẠI ĐOẠN NÀY
+        // if (req.getEmail() != null && !req.getEmail().isEmpty()) {
+        //     emailService.sendBookingEmail(
+        //             req.getEmail(),                  
+        //             req.getPatientName(), 
+        //             req.getGender(),
+        //             String.valueOf(req.getBirthyear()),
+        //             req.getPatientPhone(),
+        //             doctor.getName(),                  
+        //             req.getDate(),
+        //             slot.getSlot(),
+        //             doctor.getClinic().getName(),
+        //             doctor.getClinic().getAddress()              
+        //     );
+        // }
+
+        // if (req.getUserAccountId() == null) {
+        //     emailService.sendUserAccountEmail(
+        //         req.getEmail(),
+        //         req.getPatientName(),
+        //         account.getUsername(),
+        //         req.getPatientPhone()
+        //     );
+        // }
+        
         return ApiResponse.success("Booking created", booking);
     }
 

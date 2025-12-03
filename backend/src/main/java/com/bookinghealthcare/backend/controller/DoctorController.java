@@ -9,12 +9,20 @@ import com.bookinghealthcare.backend.repository.ClinicRepository;
 import com.bookinghealthcare.backend.repository.DoctorRepository;
 import com.bookinghealthcare.backend.repository.SpecialityRepository;
 
+import com.bookinghealthcare.backend.service.EmailService;
+import com.bookinghealthcare.backend.utils.UsernameUtils;
+
+
+import com.bookinghealthcare.backend.auth.UserAccount;
+import com.bookinghealthcare.backend.auth.UserAccountRepository;
+import com.bookinghealthcare.backend.auth.Role;
+
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/doctors")
 @RequiredArgsConstructor
@@ -25,19 +33,19 @@ public class DoctorController {
     private final SpecialityRepository specialityRepository;
     private final ClinicRepository clinicRepository;
 
+    private final UserAccountRepository userAccountRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
-    // ==============================
+
     // 🔵 GET: Lấy tất cả bác sĩ
-    // ==============================
     @GetMapping
     public ApiResponse<?> getAllDoctors() {
         List<Doctor> list = doctorRepository.findAll();
         return ApiResponse.success("Get all doctors", list);
     }
 
-    // ==============================
     // 🔵 GET: Lấy bác sĩ theo ID
-    // ==============================
     @GetMapping("/{id}")
     public ApiResponse<?> getDoctor(@PathVariable Integer id) {
         Doctor doctor = doctorRepository.findById(id)
@@ -46,9 +54,7 @@ public class DoctorController {
         return ApiResponse.success("Get doctor", doctor);
     }
 
-    // ==============================
     // 🟢 POST: Thêm bác sĩ mới
-    // ==============================
     @PostMapping
     public ApiResponse<?> createDoctor(@RequestBody DoctorRequest req) {
 
@@ -65,9 +71,36 @@ public class DoctorController {
         doctor.setExpertise(req.getExpertise());
         doctor.setLocation(req.getLocation());
         doctor.setSpeciality(speciality);
-
         doctor.setClinic(clinic);
+
         doctorRepository.save(doctor);
+
+        String username = UsernameUtils.toUsername(req.getName());
+        String rawPassword = UsernameUtils.toUsername(req.getName()) + "123";
+
+        UserAccount account = UserAccount.builder()
+            .username(username)
+            .password(passwordEncoder.encode(rawPassword))
+            .fullName(req.getName())
+            .role(Role.DOCTOR)
+            .doctorId(doctor.getId())
+            .createdAt(LocalDateTime.now())
+            .build();
+
+        userAccountRepository.save(account);
+
+        // lưu username vào bảng doctor
+        doctor.setLoginUsername(username);
+        doctorRepository.save(doctor);
+
+        if (req.getEmail() != null && !req.getEmail().isEmpty()) {
+            emailService.sendDoctorAccountEmail(
+                    req.getEmail(),
+                    req.getName(),
+                    username,
+                    rawPassword
+            ); 
+        }
         
 
         return ApiResponse.success("Doctor created", doctor);
@@ -79,10 +112,7 @@ public class DoctorController {
         return ApiResponse.success("Doctors by clinic", list);
     }
 
-
-    // ==============================
     // 🟡 PUT: Cập nhật bác sĩ
-    // ==============================
     @PutMapping("/{id}")
     public ApiResponse<?> updateDoctor(@PathVariable Integer id, @RequestBody DoctorRequest req) {
 
@@ -138,6 +168,4 @@ public class DoctorController {
         List<Doctor> doctors = doctorRepository.findBySpeciality_Id(specialityId);
         return ApiResponse.success("Doctors by speciality", doctors);
     }
-
-
 }
