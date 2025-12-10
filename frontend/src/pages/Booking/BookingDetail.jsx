@@ -116,6 +116,9 @@ useEffect(() => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const user = JSON.parse(localStorage.getItem("user") || "null");
+
+
   const handleSubmit = async () => {
     if (!validateForm()) return;
   
@@ -127,13 +130,15 @@ useEffect(() => {
         gender: form.gender,
         patientPhone: form.phone,
         email: form.email,
-        birthyear: form.birthyear,
+        birthyear: Number(form.birthyear),
         province: form.province,
         district: form.district,
-        reason: form.reason,
+        note: form.reason,
 
         doctorId: doctor.id,
         scheduleSlotId: selectedSlot.id,
+
+        userAccountId: user ? user.id : null,
 
         // Gửi thêm thông tin để email đầy đủ
         doctorName: doctor.name,
