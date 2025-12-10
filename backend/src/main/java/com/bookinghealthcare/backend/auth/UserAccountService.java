@@ -6,6 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +24,25 @@ public class UserAccountService {
     public UserAccount save(UserAccount account) {
         return repo.save(account);
     }
+
+    public UserAccount findByPhoneOrEmail(String phone, String email) {
+
+        // ƯU TIÊN TÌM THEO PHONE
+        if (phone != null && !phone.isBlank()) {
+            Optional<UserAccount> byPhone = repo.findByPhone(phone);
+            if (byPhone.isPresent()) return byPhone.get();
+        }
+    
+        // SAU ĐÓ TÌM THEO EMAIL
+        if (email != null && !email.isBlank()) {
+            Optional<UserAccount> byEmail = repo.findByEmail(email);
+            if (byEmail.isPresent()) return byEmail.get();
+        }
+    
+        return null;
+    }
+    
+    
 
     public UserAccount createUserAccountWhenGuestBooking(String fullName,
                                                         String email,

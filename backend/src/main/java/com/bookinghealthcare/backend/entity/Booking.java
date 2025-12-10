@@ -50,4 +50,8 @@ public class Booking {
     @Column(name = "user_account_id")
     private Long userAccountId;
 
+    @Column(nullable = false)
+    private Integer price;
+
+
 }
