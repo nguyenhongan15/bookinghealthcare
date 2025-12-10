@@ -48,7 +48,13 @@ public class DataLoader {
     private final UserAccountRepository userAccountRepository;
     private final DoctorRepository doctorRepository;
 
+<<<<<<< Updated upstream
     @PostConstruct
+=======
+    //==============================================================
+
+    //======================VỪA THÊM VÀO===================================
+>>>>>>> Stashed changes
     private void linkDoctorsWithAccounts() {
         List<Doctor> doctors = doctorRepository.findAll();
     
@@ -64,7 +70,12 @@ public class DataLoader {
                 });
         }
     }
+<<<<<<< Updated upstream
 
+=======
+    //===================================================================
+    @PostConstruct
+>>>>>>> Stashed changes
     public void init() {
         System.out.println("========== DATA LOADER ==========");
 

@@ -3,6 +3,7 @@ package com.bookinghealthcare.backend.controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,7 +14,8 @@ import java.nio.file.Paths;
 public class UploadController {
 
     // Thư mục ảnh bên ngoài project
-    private static final String IMAGE_DIR = "D:/jskdance_backend/bookinghealthcare/images/";
+    @Value("${file.upload-dir}")
+    private String uploadDir;
 
     // =========== UPLOAD IMAGE BÁC SĨ ===========
     @PostMapping("/doctor-image")
@@ -38,7 +40,7 @@ public class UploadController {
         try {
             String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
 
-            Path uploadPath = Paths.get(IMAGE_DIR + folder + "/");
+            Path uploadPath = Paths.get(uploadDir + folder + "/");
 
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
