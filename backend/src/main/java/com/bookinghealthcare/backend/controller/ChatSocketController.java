@@ -37,7 +37,7 @@ public class ChatSocketController {
             messagingTemplate.convertAndSend(room, msg);
 
         } catch (Exception e) {
-            System.out.println("❌ ERROR saving chat: " + e.getMessage());
+            System.out.println(" ERROR saving chat: " + e.getMessage());
             e.printStackTrace();
         }
     }

@@ -45,15 +45,16 @@ public class DataLoader {
 
     private final DoctorSimpleRepository doctorSimpleRepo;
 
-    //=================VỪA THÊM VÀO================================
     private final UserAccountRepository userAccountRepository;
     private final DoctorRepository doctorRepository;
 
+<<<<<<< Updated upstream
+    @PostConstruct
+=======
     //==============================================================
 
-    @PostConstruct
-
     //======================VỪA THÊM VÀO===================================
+>>>>>>> Stashed changes
     private void linkDoctorsWithAccounts() {
         List<Doctor> doctors = doctorRepository.findAll();
     
@@ -69,8 +70,12 @@ public class DataLoader {
                 });
         }
     }
-    //===================================================================
+<<<<<<< Updated upstream
 
+=======
+    //===================================================================
+    @PostConstruct
+>>>>>>> Stashed changes
     public void init() {
         System.out.println("========== DATA LOADER ==========");
 
@@ -94,7 +99,7 @@ public class DataLoader {
             if (skip) { skip = false; continue; }
 
             if (r.size() < 3) {
-                System.out.println("❌ Dòng bị thiếu dữ liệu, skip: " + r);
+                System.out.println("Dòng bị thiếu dữ liệu, skip: " + r);
                 continue;
             }
 
@@ -103,7 +108,7 @@ public class DataLoader {
             // Kiểm tra trùng
             Speciality exist = specialityRepo.findByCode(code);
             if (exist != null) {
-                System.out.println("⏩ Speciality existed, skip: " + code);
+                System.out.println("Speciality existed, skip: " + code);
                 continue;
             }
 
@@ -115,7 +120,7 @@ public class DataLoader {
             specialityRepo.save(s);
         }
 
-        System.out.println("✅ Specialities imported");
+        System.out.println("Specialities imported");
     }
 
     private void loadClinics() {
@@ -128,7 +133,7 @@ public class DataLoader {
             if (skip) { skip = false; continue; }
             String name = r.get(0);
             String address = r.get(1);
-            // 🎯 CHECK xem clinic đã tồn tại chưa
+
             Clinic exist = clinicRepo.findByNameAndAddress(name, address);
 
             if (exist != null) {
@@ -145,7 +150,7 @@ public class DataLoader {
             clinicRepo.save(c);
         }
 
-        System.out.println("✅ Clinics imported");
+        System.out.println(" Clinics imported");
     }
 
     private void loadDoctors() {
@@ -158,7 +163,7 @@ public class DataLoader {
 
             if (skip) { skip = false; continue; }
             if (r.size() < 7) {
-                System.out.println("❌ Dòng thiếu dữ liệu doctor, skip: " + r);
+                System.out.println(" Dòng thiếu dữ liệu doctor, skip: " + r);
                 continue;
             }
 
@@ -170,17 +175,16 @@ public class DataLoader {
             Speciality speciality = specialityRepo.findById(specialityId).orElse(null);
 
             if (clinic == null || speciality == null) {
-                System.out.println("❌ Skip doctor: Clinic or Speciality not found for " + name);
+                System.out.println(" Skip doctor: Clinic or Speciality not found for " + name);
                 continue;
             }
 
-            // 🔍 CHECK bác sĩ đã tồn tại?
             Doctor exist = doctorRepo.findByNameAndClinic_IdAndSpeciality_Id(
                 name, clinicId, specialityId
             );
 
             if (exist != null) {
-                System.out.println("⏩ Doctor existed, skip: " + name);
+                System.out.println(" Doctor existed, skip: " + name);
                 continue;
             }
 
@@ -203,7 +207,6 @@ public class DataLoader {
 
             doctorRepo.save(d);
 
-            // Tạo login_username
             String username = UsernameUtils.generateUniqueUsername(
                 name,
                 uname -> userAccountRepo.findByUsername(uname).isPresent()
@@ -236,8 +239,8 @@ public class DataLoader {
 
             doctorSimpleRepo.save(ds);
         }
-        System.out.println("✅ Doctors imported");
-        linkDoctorsWithAccounts(); // VỪA THÊM VÀO
+        System.out.println(" Doctors imported");
+        linkDoctorsWithAccounts();
 
     }
 
@@ -255,8 +258,7 @@ public class DataLoader {
             Integer doctorId = Integer.valueOf(r.get(0));
             String day = r.get(1).trim();  
             
-            // Chuẩn hoá day hoàn toàn
-            day = day.replaceAll("\\s+", "");  // remove spaces
+            day = day.replaceAll("\\s+", "");
             day = day.substring(0,1).toUpperCase() + day.substring(1).toLowerCase();
     
             String slot = r.get(2).trim();
@@ -264,7 +266,6 @@ public class DataLoader {
             Doctor doctor = doctorRepo.findById(doctorId).orElse(null);
             if (doctor == null) continue;
     
-            // Tìm ngày
             ScheduleDay scheduleDay = scheduleDayRepo.findByDoctor_IdAndDay(doctorId, day);
     
             if (scheduleDay == null) {
@@ -274,14 +275,12 @@ public class DataLoader {
                 scheduleDay = scheduleDayRepo.save(scheduleDay);
             }
     
-            // ❗❗ Check slot trùng
             boolean exists = scheduleSlotRepo.existsByScheduleDay_IdAndSlot(scheduleDay.getId(), slot);
             if (exists) {
-                System.out.println("⏩ Slot existed, skip: " + day + " - " + slot);
+                System.out.println(" Slot existed, skip: " + day + " - " + slot);
                 continue;
             }
     
-            // Lưu slot
             ScheduleSlot scheduleSlot = new ScheduleSlot();
             scheduleSlot.setScheduleDay(scheduleDay);
             scheduleSlot.setSlot(slot);
@@ -289,6 +288,6 @@ public class DataLoader {
             scheduleSlotRepo.save(scheduleSlot);
         }
     
-        System.out.println("✅ Schedule imported from Excel");
+        System.out.println(" Schedule imported from Excel");
     }
 }

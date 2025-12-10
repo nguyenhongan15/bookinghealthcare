@@ -25,20 +25,14 @@ import org.springframework.security.config.Customizer;
 public class SecurityConfig implements WebMvcConfigurer {
 
     @Autowired
-    private AdminCheck adminCheck;   // ⭐ Thêm Interceptor
+    private AdminCheck adminCheck;
 
-    // ==========================
-    // ⭐ Interceptor Admin Check
-    // ==========================
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(adminCheck)
-                .addPathPatterns("/api/**");   // Áp cho toàn bộ API
+                .addPathPatterns("/api/**");
     }
 
-    // ==========================
-    // ⭐ Cấu hình Security (CORS + disable csrf)
-    // ==========================
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -48,15 +42,12 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll()
                 )
-                .httpBasic(basic -> basic.disable())   // ⛔ TẮT BASIC AUTH
-                .formLogin(login -> login.disable());  // ⛔ TẮT FORM LOGIN
+                .httpBasic(basic -> basic.disable())
+                .formLogin(login -> login.disable());
 
         return http.build();
     }
 
-    // ==========================
-    // ⭐ Cấu hình CORS cho React
-    // ==========================
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();

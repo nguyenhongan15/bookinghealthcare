@@ -39,12 +39,10 @@ public class UserAccount {
 
     private LocalDateTime createdAt;
 
-    // ✅ Cờ đánh dấu ĐÃ gửi email tạo tài khoản hay chưa
     @Column(name = "welcome_email_sent", nullable = false)
     @Builder.Default
     private boolean welcomeEmailSent = false;
 
-    // (optional) Nếu bạn muốn tự set createdAt
     @PrePersist
     public void prePersist() {
         if (createdAt == null) {

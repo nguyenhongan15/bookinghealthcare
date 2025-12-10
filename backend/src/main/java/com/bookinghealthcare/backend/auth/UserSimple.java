@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class UserSimple {
 
     @Id
-    private Long id;           // trùng với id của UserAccount
+    private Long id;
 
     private String username;
     private String fullName;
