@@ -55,14 +55,18 @@ public class BookingController {
         UserAccount account;
 
         if (req.getUserAccountId() != null) {
-        account = userAccountService.getById(req.getUserAccountId());
-        } else {
-            account = userAccountService.createUserAccountWhenGuestBooking(
-                req.getPatientName(),
-                req.getEmail(),
-                req.getPatientPhone()
-            );
+            account = userAccountService.getById(req.getUserAccountId());
         }
+        else {
+            account = userAccountService.findByPhoneOrEmail(req.getPatientPhone(), req.getEmail());
+            if (account == null) {
+                account = userAccountService.createUserAccountWhenGuestBooking(
+                        req.getPatientName(),
+                        req.getEmail(),
+                        req.getPatientPhone()
+                );
+            }
+        }   
 
         Booking booking = new Booking();
         booking.setPatientName(req.getPatientName());
@@ -73,47 +77,50 @@ public class BookingController {
         booking.setScheduleSlot(slot);
         booking.setStatus(BookingStatus.PENDING);
         booking.setDate(LocalDate.parse(req.getDate()));
-        
+        booking.setPrice(500000);
+
         booking.setUserAccountId(account.getId());
         bookingRepository.save(booking);
 
 
         String bookingEmail = req.getEmail();
-        boolean needAccountEmail = false;
+        String accountEmail = account.getEmail(); 
+        boolean needWelcomeEmail = false;
 
-        if (bookingEmail != null && !bookingEmail.isBlank()) {
-
-            if (account.getEmail() == null || account.getEmail().isBlank()) {
-                account.setEmail(bookingEmail);
-
-                if (!account.isWelcomeEmailSent()) {
-                    needAccountEmail = true;
-                }
-            } else {
-                bookingEmail = account.getEmail();
-            }
-        } else {
-            if (account.getEmail() != null && !account.getEmail().isBlank()) {
-                bookingEmail = account.getEmail();
+        if (accountEmail != null && !accountEmail.isBlank()) {
+            if (!account.isWelcomeEmailSent()) {
+                needWelcomeEmail = true;
             }
         }
-        if (bookingEmail != null && !bookingEmail.isBlank() && needAccountEmail) {
+        else {
+            if (bookingEmail != null && !bookingEmail.isBlank()) {
+                account.setEmail(bookingEmail);
+                if (!account.isWelcomeEmailSent()) {
+                    needWelcomeEmail = true;
+                }
+            }
+        }
+        // ========== Gửi email tạo tài khoản nếu cần ==========
+        if (needWelcomeEmail) {
             try {
                 emailService.sendUserAccountEmail(
-                        bookingEmail,
+                        account.getEmail(),        // gửi về email tài khoản
                         req.getPatientName(),
                         account.getUsername(),
                         req.getPatientPhone()
                 );
+
                 account.setWelcomeEmailSent(true);
                 userAccountService.save(account);
+
             } catch (Exception e) {
-                System.out.println("⚠ Không gửi được email tạo tài khoản khi booking: " + e.getMessage());
+                System.out.println("⚠ Không gửi được email tạo tài khoản: " + e.getMessage());
             }
         }
-        if (bookingEmail != null && !bookingEmail.isBlank()) {
+         // ========== Gửi phiếu khám ==========
+         if (bookingEmail != null && !bookingEmail.isBlank()) {
             emailService.sendBookingEmail(
-                    bookingEmail,
+                    bookingEmail,                  // gửi về email user nhập khi đặt lịch
                     req.getPatientName(),
                     req.getGender(),
                     String.valueOf(req.getBirthyear()),
@@ -125,6 +132,7 @@ public class BookingController {
                     doctor.getClinic().getAddress()
             );
         }
+
         return ApiResponse.success("Booking created", booking);
     }
 
@@ -194,5 +202,4 @@ public class BookingController {
 
         return ApiResponse.success("Booked slots", slotIds);
     }
-
 }
