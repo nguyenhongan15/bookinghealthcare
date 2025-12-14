@@ -1,0 +1,109 @@
+.dp-page {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 16px;
+  }
+  
+  .dp-page h1 {
+    font-size: 28px;
+    font-weight: 700;
+  }
+  
+  .dp-sub {
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .dp-empty {
+    text-align: center;
+    color: #888;
+  }
+  
+  .dp-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  /* ================= ITEM ================= */
+  
+  .dp-item {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  }
+  
+  .dp-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .dp-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #e7f5ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1971c2;
+  }
+  
+  .dp-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .dp-name {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .dp-new {
+    background: #ffec99;
+    color: #d9480f;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 6px;
+  }
+  
+  .dp-meta {
+    font-size: 13px;
+    color: #666;
+    display: flex;
+    gap: 16px;
+  }
+  
+  .dp-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  /* ================= BUTTON ================= */
+  
+  .dp-view-btn {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    background: #e7f5ff;
+    color: #1971c2;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .dp-view-btn:hover {
+    background: #d0ebff;
+  }
+  

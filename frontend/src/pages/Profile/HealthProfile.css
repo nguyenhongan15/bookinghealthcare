@@ -1,0 +1,81 @@
+.hp-page {
+    max-width: 720px;
+    margin: 40px auto;
+    padding: 0 16px;
+  }
+  
+  .hp-page h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  
+  .hp-sub {
+    color: #666;
+    margin-bottom: 24px;
+  }
+  
+  .hp-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+  
+  .hp-field {
+    margin-bottom: 18px;
+  }
+  
+  .hp-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  
+  .hp-field textarea {
+    width: 100%;
+    min-height: 90px;
+    resize: vertical;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+    font-size: 14px;
+    outline: none;
+  }
+  
+  .hp-field textarea:focus {
+    border-color: #2bb0ed;
+  }
+  
+  .hp-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+  }
+  
+  .hp-checkbox label {
+    font-size: 14px;
+  }
+  
+  .hp-save-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    background: #2bb0ed;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .hp-save-btn:hover {
+    background: #199ad6;
+  }
+  
+  .hp-save-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  

@@ -13,6 +13,8 @@ import BookingTicket from './pages/Booking/BookingTicket'
 import DoctorDetail from './pages/DoctorDetail/DoctorDetail'
 import BookingDoctorPage from "./pages/Booking/BookingDoctorPage";
 import Appointments from "./pages/Appointments/Appointments";
+import HealthProfile from './pages/Profile/HealthProfile';
+import DoctorPatients from './pages/Doctor/DoctorPatients'
 
 
 import { useState, useEffect } from "react";
@@ -139,6 +141,8 @@ function App() {
 
             <Route path="/bac-si/thong-tin/:id" element={<DoctorDetail onStartChat={handleStartChatFromDoctor} />} />
             <Route path="/appointments" element={<Appointments />} />
+            <Route path="/profile/health" element={<HealthProfile />} />
+            <Route path="/doctor/patients" element={<DoctorPatients />} />
 
             <Route path="*" element={
               <div style={{ padding: '40px' }}>

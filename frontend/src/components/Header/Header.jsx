@@ -70,7 +70,7 @@ function Header() {
         <div className="bc-header-actions">
 
           <Link to="/tim-kiem" className="bc-header-link">
-            Tìm kiếm
+            
           </Link>
 
           {/* LỊCH HẸN / LỊCH KHÁM */}
