@@ -7,7 +7,9 @@ import profileIcon from "../../assets/icons/profile.svg";
 import RegisterLoginPopup from "../../pages/Auth/RegisterLoginPopup";
 import PopupAccount from "./PopupAccount";
 import DoctorChatPopup from "../Chat/DoctorChatPopup";
+import UserChatPopup from "../Chat/UserChatPopup";
 
+import { CalendarCheck } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 
 function Header() {
@@ -33,10 +35,9 @@ function Header() {
   const openAccountPopup = () => {
     if (profileBtnRef.current) {
       const rect = profileBtnRef.current.getBoundingClientRect();
-
       setPopupPos({
-        x: rect.left + rect.width / 2,  // 📌 Căn giữa theo icon
-        y: rect.bottom + 50              // 📌 Hiện ngay dưới icon (8px margin)
+        x: rect.left + rect.width / 2,
+        y: rect.bottom + 50,
       });
     }
     setShowAccountPopup(true);
@@ -50,7 +51,6 @@ function Header() {
         <div className="bc-logo-area">
           <Link to="/" className="bc-logo">
             <img src={LogoIcon} alt="Logo" className="bc-logo-image" />
-
             <div className="bc-logo-text">
               <span className="bc-logo-main">HealthCare</span>
               <span className="bc-logo-sub">Nền tảng chăm sóc sức khỏe</span>
@@ -68,7 +68,26 @@ function Header() {
 
         {/* ACTIONS */}
         <div className="bc-header-actions">
-          <Link to="/tim-kiem" className="bc-header-link">Tìm kiếm</Link>
+
+          <Link to="/tim-kiem" className="bc-header-link">
+            Tìm kiếm
+          </Link>
+
+          {/* LỊCH HẸN / LỊCH KHÁM */}
+          {user && user.role === "USER" && (
+            <Link to="/appointments" className="header-icon">
+              <CalendarCheck size={20} />
+              <span>Lịch hẹn</span>
+            </Link>
+          )}
+
+          {user && user.role === "DOCTOR" && (
+            <Link to="/appointments" className="header-icon">
+              <CalendarCheck size={20} />
+              <span>Lịch khám</span>
+            </Link>
+          )}
+
 
           {/* PROFILE */}
           <button
@@ -82,42 +101,35 @@ function Header() {
             <img src={profileIcon} alt="Profile" style={{ width: 20 }} />
             {user ? user.fullName.split(" ").slice(-1)[0] : "Tài khoản"}
           </button>
-          {/* </button>
 
-          <button className="bc-header-btn">Chat </button>
-        </div> */}
-
+          {/* CHAT */}
           {user ? (
-            user.role === "DOCTOR" ? (
+            user.role === "DOCTOR" && (
               <button
                 className="bc-header-btn"
                 onClick={() => setShowChatPopup(true)}
               >
-                  Chat
+                Chat
               </button>
-            ) : (
-            <Link to="/lich-hen" className="bc-header-btn">
-              Lịch hẹn
-            </Link>
-          )
-        ) : (
-          // chưa đăng nhập → khi bấm Chat thì mở Login
-          <button
-            className="bc-header-btn"
-            onClick={() => setShowLoginPopup(true)}
-          >
-            Chat
-        </button>
-      )}
+            )
+          ) : (
+            <button
+              className="bc-header-btn"
+              onClick={() => setShowLoginPopup(true)}
+            >
+              Chat
+            </button>
+          )}
+        </div>
       </div>
-    </div>
+
       {/* POPUP ACCOUNT */}
       {showAccountPopup && user && (
         <PopupAccount
           user={user}
           onLogout={handleLogout}
           onClose={() => setShowAccountPopup(false)}
-          pos={popupPos}   // 📌 truyền vị trí popup xuống component
+          pos={popupPos}
         />
       )}
 
@@ -131,12 +143,8 @@ function Header() {
           }}
         />
       )}
-      {/* {showChatPopup && user?.role === "DOCTOR" && (
-        <DoctorChatPopup
-          doctor={{ id: user.doctorId, name: user.fullName }}
-          onClose={() => setShowChatPopup(false)}
-        />
-      )} */}
+
+      {/* CHAT POPUP */}
       {showChatPopup && user?.role === "DOCTOR" && (
         <DoctorChatPopup onClose={() => setShowChatPopup(false)} />
       )}
@@ -144,7 +152,6 @@ function Header() {
       {showChatPopup && user?.role === "USER" && (
         <UserChatPopup onClose={() => setShowChatPopup(false)} />
       )}
-
     </header>
   );
 }
