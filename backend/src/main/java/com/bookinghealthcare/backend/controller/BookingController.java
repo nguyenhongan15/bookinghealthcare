@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 import java.time.LocalDate;
-
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,6 +74,7 @@ public class BookingController {
         }   
 
         Booking booking = new Booking();
+        booking.setUserAccountId(account.getId());
         booking.setPatientName(req.getPatientName());
         booking.setPatientPhone(req.getPatientPhone());
         booking.setNote(req.getNote());
@@ -82,10 +84,19 @@ public class BookingController {
         booking.setStatus(BookingStatus.PENDING);
         booking.setDate(LocalDate.parse(req.getDate()));
         booking.setPrice(500000);
-
         booking.setUserAccountId(account.getId());
-        bookingRepository.save(booking);
 
+        // slot.getSlot() = "08:00 - 09:00"
+        String slotTime = slot.getSlot().split("-")[0].trim(); // "08:00"
+
+        LocalDate date = LocalDate.parse(req.getDate());
+        LocalTime time = LocalTime.parse(slotTime);
+
+        booking.setAppointmentAt(LocalDateTime.of(date, time));
+        booking.setReminderSent(false);
+
+
+        bookingRepository.save(booking);
 
         String bookingEmail = req.getEmail();
         String accountEmail = account.getEmail(); 
@@ -188,6 +199,7 @@ public class BookingController {
             m.put("patientName", b.getPatientName());
             m.put("patientPhone", b.getPatientPhone());
             m.put("status", b.getStatus());
+            m.put("userId", b.getUserAccountId());
             return m;
         }).toList();
 
@@ -208,14 +220,33 @@ public class BookingController {
         return ApiResponse.success("Booking status updated", booking);
     }
 
+    // @DeleteMapping("/{id}")
+    // public ApiResponse<?> delete(@PathVariable Integer id) {
+    //     if (!bookingRepository.existsById(id)) {
+    //         throw new RuntimeException("Booking not found");
+    //     }
+    //     bookingRepository.deleteById(id);
+    //     return ApiResponse.success("Booking deleted", null);
+    // }
     @DeleteMapping("/{id}")
     public ApiResponse<?> delete(@PathVariable Integer id) {
-        if (!bookingRepository.existsById(id)) {
-            throw new RuntimeException("Booking not found");
+
+        Booking booking = bookingRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime appt = booking.getAppointmentAt();
+
+        long minutesLeft = java.time.Duration.between(now, appt).toMinutes();
+
+        if (minutesLeft < 120) {
+            throw new RuntimeException("Không thể huỷ lịch khi còn dưới 2 giờ");
         }
-        bookingRepository.deleteById(id);
+
+        bookingRepository.delete(booking);
         return ApiResponse.success("Booking deleted", null);
     }
+
 
     @GetMapping("/booked-slots")
         public ApiResponse<?> getBookedSlots(

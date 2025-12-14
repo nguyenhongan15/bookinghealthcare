@@ -208,6 +208,41 @@ public class EmailService {
             sendHtmlEmail(toEmail, subject, html);
     }
 
+    public void sendReminderEmail(
+        String toEmail,
+        String patientName,
+        String doctorName,
+        String appointmentTime,
+        String clinicName
+    ) {
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setTo(toEmail);
+            helper.setSubject("⏰ Nhắc lịch khám sắp tới");
+            helper.setFrom("HealthCare Booking <vma33169@gmail.com>");
+
+
+            String content = """
+                <h3>Xin chào %s,</h3>
+                <p>Bạn có lịch khám sắp tới:</p>
+                <ul>
+                    <li><b>Bác sĩ:</b> %s</li>
+                    <li><b>Thời gian:</b> %s</li>
+                    <li><b>Phòng khám:</b> %s</li>
+                </ul>
+                <p>Vui lòng đến đúng giờ. Xin cảm ơn!</p>
+            """.formatted(patientName, doctorName, appointmentTime, clinicName);
+
+            helper.setText(content, true);
+            mailSender.send(message);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Không gửi được email nhắc lịch");
+        }
+    }
 }
 
 
