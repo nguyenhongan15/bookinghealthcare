@@ -17,6 +17,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.time.LocalDate;
 
+import java.util.HashMap;
+import java.util.Map;
+
+
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -154,12 +158,42 @@ public class BookingController {
         List<Booking> list = bookingRepository.findByPatientPhoneOrderByCreatedAtDesc(phone);
         return ApiResponse.success("Booking history by phone", list);
     }
+    @GetMapping("/user/{userId}")
+    public ApiResponse<?> getByUser(@PathVariable Long userId) {
+
+        List<Booking> list =
+            bookingRepository.findByUserAccountIdOrderByCreatedAtDesc(userId);
+
+        return ApiResponse.success("Booking by user", list);
+    }
+
 
     @GetMapping("/doctor/{doctorId}")
     public ApiResponse<?> getByDoctor(@PathVariable Integer doctorId) {
         List<Booking> list = bookingRepository.findByDoctor_IdOrderByCreatedAtDesc(doctorId);
         return ApiResponse.success("Bookings of doctor", list);
     }
+
+    @GetMapping("/doctor-schedule")
+    public ApiResponse<?> getDoctorSchedule(@RequestParam Integer doctorId) {
+
+        List<Booking> bookings =
+                bookingRepository.findByDoctor_IdOrderByCreatedAtDesc(doctorId);
+
+        List<Map<String, Object>> result = bookings.stream().map(b -> {
+            Map<String, Object> m = new HashMap<>();
+            m.put("id", b.getId());
+            m.put("date", b.getDate());
+            m.put("time", b.getScheduleSlot().getSlot());
+            m.put("patientName", b.getPatientName());
+            m.put("patientPhone", b.getPatientPhone());
+            m.put("status", b.getStatus());
+            return m;
+        }).toList();
+
+        return ApiResponse.success("Doctor schedule", result);
+    }
+
 
     @PutMapping("/{id}/status")
     public ApiResponse<?> updateStatus(@PathVariable Integer id,

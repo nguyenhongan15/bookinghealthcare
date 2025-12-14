@@ -28,4 +28,5 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     );
     boolean existsByDoctor_IdAndUserAccountId(Integer doctorId, Long userAccountId);
 
+    List<Booking> findByUserAccountIdOrderByCreatedAtDesc(Long userAccountId);
 }
