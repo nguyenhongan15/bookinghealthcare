@@ -12,6 +12,8 @@ import BookingDetail from './pages/Booking/BookingDetail'
 import BookingTicket from './pages/Booking/BookingTicket'
 import DoctorDetail from './pages/DoctorDetail/DoctorDetail'
 import BookingDoctorPage from "./pages/Booking/BookingDoctorPage";
+import Appointments from "./pages/Appointments/Appointments";
+
 
 import { useState, useEffect } from "react";
 
@@ -134,7 +136,10 @@ function App() {
 
             <Route path="/phieu-thong-tin" element={<BookingTicket />} />
 
+
             <Route path="/bac-si/thong-tin/:id" element={<DoctorDetail onStartChat={handleStartChatFromDoctor} />} />
+            <Route path="/appointments" element={<Appointments />} />
+
             <Route path="*" element={
               <div style={{ padding: '40px' }}>
                   <h2>Không tìm thấy trang</h2>

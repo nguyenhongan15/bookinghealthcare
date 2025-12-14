@@ -116,3 +116,27 @@
     display: none;
   }
 }
+
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.header-icon {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 500;
+  color: #00bcd4;
+  transition: all 0.2s ease;
+}
+
+.header-icon:hover {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+

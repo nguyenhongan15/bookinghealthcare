@@ -1,0 +1,83 @@
+.cancel-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  
+  .cancel-popup {
+    background: white;
+    width: 360px;
+    padding: 24px;
+    border-radius: 16px;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    animation: popupFade 0.2s ease;
+  }
+  
+  @keyframes popupFade {
+    from {
+      transform: translateY(10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .cancel-popup h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  .cancel-popup p {
+    font-size: 14px;
+    color: #64748b;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #94a3b8;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  
+  .btn-secondary {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    cursor: pointer;
+  }
+  
+  .btn-danger {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: #ef4444;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .btn-danger:hover {
+    background: #dc2626;
+  }
+  

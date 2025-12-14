@@ -19,7 +19,13 @@ export const bookingService = {
   getByDoctor: (doctorId) => api.get(`/bookings/doctor/${doctorId}`),
 
   // Đổi trạng thái booking
-  updateStatus: (id, data) => api.put(`/bookings/${id}/status`, data),
+  updateStatus: (id, status) =>
+    api.put(`/bookings/${id}/status`, { status }),
+  
+
+  getByUserId: (userId) =>
+    api.get(`/bookings/user/${userId}`),
+  
 
   // Xoá booking
   delete: (id) => api.delete(`/bookings/${id}`),
