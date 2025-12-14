@@ -53,5 +53,8 @@ public class Booking {
     @Column(nullable = false)
     private Integer price;
 
+    private LocalDateTime appointmentAt;   // thời điểm khám (gộp date + time)
+    private Boolean reminderSent = false;
+    private LocalDateTime reminderSentAt;
 
 }
