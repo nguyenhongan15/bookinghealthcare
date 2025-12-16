@@ -9,5 +9,4 @@ function SpecialtyPage() {
     </div>
   )
 }
-
 export default SpecialtyPage
