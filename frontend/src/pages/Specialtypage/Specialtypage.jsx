@@ -1,5 +1,5 @@
 import SpecialtyGrid from "../../components/Specialgrid/Specialgrid"
-import './SpecialtyPage.css'
+import './Specialtypage.css'
 
 function SpecialtyPage() {
   return (
