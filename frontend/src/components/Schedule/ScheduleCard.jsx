@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ScheduleCard.css";
+import { API_BASE } from "../../config/env";
 
 const VIET_DAY = {
   Mon: "Thứ 2",
@@ -76,16 +77,20 @@ function ScheduleCard({ schedules, doctor }) {
     if (!doctor || !selectedDay) return;
 
     const realDate = getNextDateOf(selectedDay.day);
-    fetch(`http://localhost:8080/api/bookings/booked-slots?doctorId=${doctor.id}&date=${realDate}`)
+    api
+  .get("/bookings/booked-slots", {
+    params: {
+      doctorId: doctor.id,
+      date: realDate,
+    },
+  })
+  .then((res) => {
+    if (res.data?.data) {
+      setBookedSlots(res.data.data);
+    }
+  })
+  .catch((err) => console.error("Booked slot error", err));
 
-
-      .then(res => res.json())
-      .then(api => {
-        if (api.data) {
-          setBookedSlots(api.data); // danh sách slotId đã đặt
-        }
-      })
-      .catch(err => console.error("Booked slot error", err));
   }, [doctor, selectedDay]);
   
 

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Doctorcard from "./Doctorcard";
 import { doctorService } from "../../services/doctorService";
 import { scheduleService } from "../../services/scheduleService";
+import { API_BASE } from "../../config/env";
 
 function BookingDoctorPage() {
   const { id } = useParams();
@@ -52,7 +53,7 @@ function BookingDoctorPage() {
         name={doctor.name}
         desc={doctor.description}
         image={
-          doctor.image ? `http://localhost:8080${doctor.image}` : "/default-doctor.png"
+          doctor.image ? `${API_BASE}${doctor.image}` : "/default-doctor.png"
         }
         location={doctor.location}
         schedule={schedule}

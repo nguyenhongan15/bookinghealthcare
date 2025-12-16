@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Specialgrid.css";
 import { specialityService } from "../../services/specialityService";
+import { API_BASE } from "../../config/env";
 
 function Specialgrid({ limit }) {
   const [specialities, setSpecialities] = useState([]);
@@ -30,7 +31,7 @@ function Specialgrid({ limit }) {
         <Link key={item.id} to={`/chuyen-khoa/${item.code}`} className="specialty-card">
 
           <img
-            src={item.image ? `http://localhost:8080${item.image}` : "/default.png"}
+            src={item.image ? `${API_BASE}${item.image}` : "/default.png"}
             alt={item.title}
             className="specialty-img"
           />
