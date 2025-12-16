@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
 
-// Pages
 import Home from './pages/Home/Home'
 import Search from './pages/Search/Search'
 import Specialtypage from './pages/Specialtypage/Specialtypage'
@@ -16,10 +15,8 @@ import Appointments from "./pages/Appointments/Appointments";
 import HealthProfile from './pages/Profile/HealthProfile';
 import DoctorPatients from './pages/Doctor/DoctorPatients'
 
-
 import { useState, useEffect } from "react";
 
-// Components
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 import FloatingChatButton from "./components/Chat/FloatingChatButton";
@@ -118,7 +115,6 @@ function App() {
             <Route path="/tim-kiem" element={<Search />} />
             <Route path="/kham-chuyen-khoa" element={<Specialtypage />} />
 
-
             <Route path="/co-so-y-te" element={<ClinicPage />} />
             <Route path="/co-so-y-te/:id" element={<ClinicDetail />} />
 
@@ -129,7 +125,6 @@ function App() {
             <Route path="/dat-lich-kham/bac-si/:id" element={<BookingDoctorPage />} />
 
             <Route path="/phieu-thong-tin" element={<BookingTicket />} />
-
 
             <Route path="/bac-si/thong-tin/:id" element={<DoctorDetail onStartChat={handleStartChatFromDoctor} />} />
             <Route path="/appointments" element={<Appointments />} />
