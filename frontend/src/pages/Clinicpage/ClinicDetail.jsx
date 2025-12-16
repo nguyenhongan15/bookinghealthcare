@@ -4,6 +4,7 @@ import "./Clinicpage.css";
 import { clinicService } from "../../services/clinicService";
 import { doctorService } from "../../services/doctorService";
 import { scheduleService } from "../../services/scheduleService";
+import { API_BASE } from "../../config/env";
 
 function ClinicDetail() {
   const { id } = useParams(); // id clinic
@@ -69,7 +70,7 @@ function ClinicDetail() {
       <div className="clinic-detail-header">
         {clinic.image && (
           <img
-            src={`http://localhost:8080${clinic.image}`}
+          src={`${API_BASE}${clinic.image}`}
             alt={clinic.name}
             className="clinic-detail-img"
           />
@@ -95,7 +96,7 @@ function ClinicDetail() {
               <img
                 src={
                   doc.image
-                    ? `http://localhost:8080${doc.image}`
+                    ? `${API_BASE}${doc.image}`
                     : "/default-doctor.png"
                 }
                 alt={doc.name}

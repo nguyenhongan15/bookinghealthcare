@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import "./UserChatPopup.css";
 import api from "../../services/http";
 import { Client } from "@stomp/stompjs";
+import { API_BASE } from "../../config/env";
 
 export default function UserChatPopup({ initialDoctor, onClose, onFirstMessage }) {
   const rawUser = JSON.parse(localStorage.getItem("user"));
@@ -29,7 +30,7 @@ export default function UserChatPopup({ initialDoctor, onClose, onFirstMessage }
   // ================== WEBSOCKET ==================
   useEffect(() => {
     const client = new Client({
-      brokerURL: "ws://localhost:8080/ws",
+      brokerURL: import.meta.env.VITE_WS_BASE_URL,
       reconnectDelay: 3000,
       onConnect: () => {
         setConnected(true);
@@ -132,7 +133,7 @@ export default function UserChatPopup({ initialDoctor, onClose, onFirstMessage }
             <img
               src={
                 d.image
-                  ? `http://localhost:8080${d.image}`
+                  ? `${API_BASE}${d.image}`
                   : "/default-doctor.png"
               }
               alt={d.name}

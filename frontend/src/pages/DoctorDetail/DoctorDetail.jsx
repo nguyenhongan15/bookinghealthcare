@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { API_BASE } from "../../config/env";
 
 import "./DoctorDetail.css";
 
@@ -85,7 +86,7 @@ function DoctorDetail({ onStartChat }) {
         <img
           src={
             doctor.image
-              ? `http://localhost:8080${doctor.image}`
+              ? `${API_BASE}${doctor.image}`
               : "/default-doctor.png"
           }
           alt={doctor.name}

@@ -45,7 +45,7 @@ function ClinicGrid({ limit }) {
           <img
             src={
               item.image
-                ? `http://localhost:8080${item.image}` // ảnh lưu trong DB dạng /images/clinics/file.jpg
+                ? `${API_BASE}${item.image}`
                 : "/default.png"
             }
             alt={item.name}

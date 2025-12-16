@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { API_BASE } from "../../config/env";
 import "./Bookingpage.css";
 
 import Doctorcard from "./Doctorcard";
@@ -67,7 +68,7 @@ function Bookingpage() {
           id={doc.id}
           name={doc.name}
           desc={doc.expertise}
-          image={`http://localhost:8080${doc.image}`}
+          image={doc.image ? `${API_BASE}${doc.image}` : "/default-doctor.png"}
           location={doc.location}
           schedule={schedules[doc.id] || []}
         />

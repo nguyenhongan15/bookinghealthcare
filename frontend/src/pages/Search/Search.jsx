@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE } from "../../config/env";
 import "./Search.css";
 
 import AISuggestChat from "../../components/AI/AISuggestChat";
@@ -81,7 +82,7 @@ export default function Search() {
                 desc={d.description || d.speciality?.title}
                 image={
                   d.image
-                    ? `http://localhost:8080${d.image}`
+                    ? `${API_BASE}${d.image}`
                     : "/default-doctor.png"
                 }
                 location={d.clinic?.address || "Đang cập nhật"}

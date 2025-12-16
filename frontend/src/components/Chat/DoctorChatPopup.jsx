@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import "./DoctorChatPopup.css";
 import api from "../../services/http";
 import { Client } from "@stomp/stompjs";
+import { API_BASE } from "../../config/env";
 
 export default function DoctorChatPopup({ onClose }) {
   const rawUser = JSON.parse(localStorage.getItem("user"));
@@ -34,7 +35,7 @@ export default function DoctorChatPopup({ onClose }) {
   // WebSocket
   useEffect(() => {
     const client = new Client({
-      brokerURL: "ws://localhost:8080/ws",
+      brokerURL: import.meta.env.VITE_WS_BASE_URL,
       reconnectDelay: 2000,
       onConnect: () => {
         console.log("Doctor WS connected!");
