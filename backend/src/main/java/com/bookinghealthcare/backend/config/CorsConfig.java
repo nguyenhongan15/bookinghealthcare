@@ -14,9 +14,13 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173")
-                        .allowedMethods("*")
-                        .allowedHeaders("*");
+                    .allowedOrigins(
+                        "http://localhost:5173",
+                        "https://vite-react-eight-sooty-81.vercel.app"
+                    )
+                    .allowedMethods("*")
+                    .allowedHeaders("*")
+                    .allowCredentials(true);
             }
         };
     }
