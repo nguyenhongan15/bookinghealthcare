@@ -1,5 +1,7 @@
+import api from "../../services/http";
 import "./PopupAccount.css";
 import { useNavigate } from "react-router-dom";
+import { API_BASE } from "../../config/env";
 
 export default function PopupAccount({ user, onLogout, onClose, pos }) {
   const navigate = useNavigate();

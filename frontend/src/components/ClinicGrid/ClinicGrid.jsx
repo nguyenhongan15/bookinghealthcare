@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import "./ClinicGrid.css";
 import { clinicService } from "../../services/clinicService";
 import { API_BASE } from "../../config/env";
+import api from "../../services/http";
+
 
 function ClinicGrid({ limit }) {
   const [clinics, setClinics] = useState([]);
