@@ -24,7 +24,7 @@ public class UserAccount {
     private String password;
     private String phone;
 
-    @Column(nullable = true, unique = true)   // NẾU LỖI NHIỀU QUÁ THÌ NÉM EMAIL LÊN TRÊN
+    @Column(nullable = true, unique = true) 
     private String email;
 
     @Column(name = "full_name")

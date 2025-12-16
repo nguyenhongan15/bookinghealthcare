@@ -27,13 +27,11 @@ public class UserAccountService {
 
     public UserAccount findByPhoneOrEmail(String phone, String email) {
 
-        // ƯU TIÊN TÌM THEO PHONE
         if (phone != null && !phone.isBlank()) {
             Optional<UserAccount> byPhone = repo.findByPhone(phone);
             if (byPhone.isPresent()) return byPhone.get();
         }
     
-        // SAU ĐÓ TÌM THEO EMAIL
         if (email != null && !email.isBlank()) {
             Optional<UserAccount> byEmail = repo.findByEmail(email);
             if (byEmail.isPresent()) return byEmail.get();
