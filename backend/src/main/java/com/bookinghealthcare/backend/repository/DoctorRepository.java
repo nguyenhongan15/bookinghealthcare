@@ -26,5 +26,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 
     Doctor findByNameAndClinic_IdAndSpeciality_Id(String name, Integer clinicId, Integer specialityId);
 
+    List<Doctor> findBySpeciality_TitleIn(List<String> titles);
 
 }

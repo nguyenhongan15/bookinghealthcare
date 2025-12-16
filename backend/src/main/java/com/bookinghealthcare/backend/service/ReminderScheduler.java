@@ -24,11 +24,11 @@ public class ReminderScheduler {
         ZoneId zone = ZoneId.of("Asia/Ho_Chi_Minh");
         LocalDateTime now = LocalDateTime.now(zone);
 
-        // LocalDateTime from = now.plusHours(1); // test mai mới test được
-        // LocalDateTime to   = now.plusHours(2);
+        LocalDateTime from = now.plusHours(1);
+        LocalDateTime to   = now.plusHours(2);
 
-        LocalDateTime from = now.minusMinutes(1);
-        LocalDateTime to   = now.plusMinutes(5);
+        //LocalDateTime from = now.minusMinutes(1);
+        //LocalDateTime to   = now.plusMinutes(5);
 
 
         List<Booking> list = bookingRepository.findNeedReminder(from, to);

@@ -17,7 +17,6 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    // Thông tin bệnh nhân
     @Column(nullable = false)
     private String patientName;
 
@@ -26,15 +25,13 @@ public class Booking {
 
     private String note;
 
-    @Column(nullable = false)
+    @Column(nullable = true) // lỗi quá thì sửa là false
     private String email;
 
-    // Bác sĩ
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
-    // Slot cụ thể trong ngày
     @ManyToOne
     @JoinColumn(name = "schedule_slot_id", nullable = false)
     private ScheduleSlot scheduleSlot;
@@ -53,8 +50,8 @@ public class Booking {
     @Column(nullable = false)
     private Integer price;
 
-    private LocalDateTime appointmentAt;   // thời điểm khám (gộp date + time)
+    private LocalDateTime appointmentAt;
     private Boolean reminderSent = false;
     private LocalDateTime reminderSentAt;
-
+    private boolean reviewed = false;
 }
