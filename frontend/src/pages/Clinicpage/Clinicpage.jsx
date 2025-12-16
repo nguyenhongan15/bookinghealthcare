@@ -1,5 +1,5 @@
 import ClinicGrid from '../../components/ClinicGrid/ClinicGrid'
-import './ClinicPage.css'
+import './Clinicpage.css'
 
 function ClinicPage() {
   return (
