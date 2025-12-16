@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
 
 // Pages
-import Home from './pages/Home/home'
+import Home from './pages/Home/Home'
 import Search from './pages/Search/Search'
 import Specialtypage from './pages/Specialtypage/Specialtypage'
 import ClinicPage from './pages/Clinicpage/Clinicpage'
@@ -33,14 +33,13 @@ function App() {
   const role = user?.role;
   const pendingDoctor = localStorage.getItem("pending_chat_doctor");
 
-  const [chatEnabled, setChatEnabled] = useState(false); // đã gửi ít nhất 1 tin chưa
-  const [lastDoctor, setLastDoctor] = useState(null); // bác sĩ chat gần nhất
+  const [chatEnabled, setChatEnabled] = useState(false);
+  const [lastDoctor, setLastDoctor] = useState(null);
 
   const [showChatPopup, setShowChatPopup] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [popupDoctor, setPopupDoctor] = useState(null);
 
-  // SAI THÌ XOÁ NGUYÊN ĐOẠN NÀY========================================
   useEffect(() => {
     if (!user) {
       setChatEnabled(false);
@@ -56,19 +55,14 @@ function App() {
 
     const rawDoc = localStorage.getItem(lastDoctorKey);
     setLastDoctor(rawDoc ? JSON.parse(rawDoc) : null);
-  }, [rawUser]); // khi login / logout
+  }, [rawUser]);
 
-  // ----------- GỌI TỪ TRANG DOCTORDETAIL -----------
   const handleStartChatFromDoctor = (doctor) => {
-    // if (!user || user.role !== "USER") return;
-    // setPopupDoctor(doctor);
-    // setShowChatPopup(true);      // chưa bật nút chat nếu chưa gửi tin
     if (!doctor) return;
     setPopupDoctor(doctor);
     setShowChatPopup(true); 
   };
 
-  // ----------- KHI GỬI TIN NHẮN ĐẦU TIÊN -----------
   const handleFirstMessageSent = (doctor) => {
     if (!user) return;
 
@@ -105,7 +99,6 @@ function App() {
     }
   }, [user]);
 
-  // ----------- CLICK NÚT CHAT NỔI -----------
   const handleFloatingButtonClick = () => {
     setPopupDoctor(lastDoctor || null);
     setShowChatPopup(true);
@@ -114,7 +107,6 @@ function App() {
   const showFloatingButton =
     user && user.role === "USER" && chatEnabled === true;
   
-  //==============================================================================  
   return (
     <Router>
       <div className="app-root">
