@@ -20,6 +20,15 @@ import com.bookinghealthcare.backend.auth.DoctorSimpleRepository;
 import com.bookinghealthcare.backend.auth.Role;
 import com.bookinghealthcare.backend.utils.UsernameUtils;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.beans.factory.annotation.Value;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Component;
@@ -47,6 +56,9 @@ public class DataLoader {
 
     private final UserAccountRepository userAccountRepository;
     private final DoctorRepository doctorRepository;
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
 
     private void linkDoctorsWithAccounts() {
         List<Doctor> doctors = doctorRepository.findAll();
@@ -63,10 +75,54 @@ public class DataLoader {
                 });
         }
     }
+    private void copyImagesToUploadDir() {
+        try {
+            Path uploadBase = Path.of(uploadDir);
+            Files.createDirectories(uploadBase);
+    
+            copyResourceFolder("images/specialities", uploadBase.resolve("specialities"));
+            copyResourceFolder("images/doctors", uploadBase.resolve("doctors"));
+            copyResourceFolder("images/clinics", uploadBase.resolve("clinics"));
+    
+            System.out.println("✅ Images copied to " + uploadBase);
+    
+        } catch (Exception e) {
+            System.err.println("❌ Failed to copy images");
+            e.printStackTrace();
+        }
+    }
+    
+    private void copyResourceFolder(String resourcePath, Path targetDir) throws Exception {
+    
+        Files.createDirectories(targetDir);
+    
+        PathMatchingResourcePatternResolver resolver =
+                new PathMatchingResourcePatternResolver();
+    
+        Resource[] resources =
+                resolver.getResources("classpath:" + resourcePath + "/*");
+    
+        for (Resource r : resources) {
+            if (!r.isReadable()) continue;
+    
+            Path targetFile = targetDir.resolve(r.getFilename());
+    
+            Files.copy(
+                    r.getInputStream(),
+                    targetFile,
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+    
+            System.out.println("📸 Copied: " + targetFile);
+        }
+    }
+    
 
     @PostConstruct
     public void init() {
         System.out.println("========== DATA LOADER ==========");
+
+        copyImagesToUploadDir(); 
 
         loadSpecialities();
         loadClinics();
