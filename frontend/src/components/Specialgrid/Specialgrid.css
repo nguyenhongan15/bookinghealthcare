@@ -34,3 +34,8 @@
   margin-top: 10px;
   color: #333;
 }
+.specialty-card.active {
+  border: 2px solid #111;
+  background: #f9f9f9;
+}
+

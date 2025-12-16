@@ -27,7 +27,7 @@ function Specialgrid({ limit }) {
   return (
     <div className="specialty-grid">
       {specialities.map((item) => (
-        <Link to={`/chuyen-khoa/${item.code}`} className="specialty-card">
+        <Link key={item.id} to={`/chuyen-khoa/${item.code}`} className="specialty-card">
 
           <img
             src={item.image ? `http://localhost:8080${item.image}` : "/default.png"}

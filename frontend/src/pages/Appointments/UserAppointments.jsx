@@ -3,6 +3,8 @@ import { CalendarDays, Clock, Stethoscope, Building2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { bookingService } from "../../services/bookingService";
 import CancelBookingPopup from "./CancelBookingPopup";
+import ReviewPopup from "./ReviewPopup";
+
 
 export default function UserAppointments() {
   const [appointments, setAppointments] = useState([]);
@@ -16,6 +18,11 @@ export default function UserAppointments() {
 
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?.id;
+
+  const [now, setNow] = useState(new Date());
+  const [reviewBooking, setReviewBooking] = useState(null);
+
+
 
   // ❌ Chưa đăng nhập
   if (!userId) {
@@ -86,6 +93,31 @@ export default function UserAppointments() {
       setSelectedBookingId(null);
     }
   };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNow(new Date());
+    }, 30000); // 30 giây update 1 lần
+  
+    return () => clearInterval(timer);
+  }, []);
+  
+  function getSlotEndDateTime(item) {
+    // item.date = "2025-12-18"
+    // item.scheduleSlot.slot = "09:00 - 10:00"
+    if (!item.date || !item.scheduleSlot?.slot) return null;
+  
+    const endTime = item.scheduleSlot.slot.split(" - ")[1]; // "10:00"
+    return new Date(`${item.date}T${endTime}`);
+  }
+  
+  function canReview(item) {
+    const slotEnd = getSlotEndDateTime(item);
+    if (!slotEnd) return false;
+  
+    return now > slotEnd && item.reviewed !== true;
+  }
+  
 
   return (
     <div className="appointments-page">
@@ -165,6 +197,20 @@ export default function UserAppointments() {
         }}
         onConfirm={confirmCancel}
       />
+      {reviewBooking && (
+      <ReviewPopup
+            booking={reviewBooking}
+            onClose={() => setReviewBooking(null)}
+            onSuccess={() => {
+                bookingService.getByUserId(userId).then(res => {
+                    const data = res.data?.data || [];
+                    setAppointments(data);
+                    setFilteredAppointments(data);
+                });
+            }}
+       />
+       )}
+
     </div>
   );
 }

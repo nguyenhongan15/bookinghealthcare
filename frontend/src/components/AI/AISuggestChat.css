@@ -1,0 +1,214 @@
+.ai-chat-box {
+    max-width: 520px;
+    background: #fff;
+    border-radius: 18px;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  
+  /* HEADER */
+  .ai-chat-header {
+    background: linear-gradient(135deg, #00bcd4, #4dd0e1);
+    color: #ffffff;
+    padding: 14px 16px;
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .ai-chat-header span {
+    font-size: 12px;
+    font-weight: 400;
+    color: #e0f7fa;
+  }
+  /* BODY */
+  .ai-chat-body {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 360px;
+    overflow-y: auto;
+  }
+  
+  /* CHAT BUBBLES */
+  .chat-bubble {
+    max-width: 85%;
+    padding: 12px 14px;
+    border-radius: 16px;
+    font-size: 14px;
+  }
+  
+  .chat-bubble.user {
+    align-self: flex-end;
+    background: #111;
+    color: #fff;
+  }
+  
+  .chat-bubble.ai {
+    align-self: flex-start;
+    background: #f5f5f5;
+    color: #111;
+  }
+  
+  .chat-bubble.loading {
+    font-style: italic;
+  }
+  
+  /* AI CONTENT */
+  .ai-section {
+    margin-top: 8px;
+  }
+  
+  .ai-section ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 6px;
+  }
+  
+  .ai-section li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #fff;
+    border: 1px solid #eaeaea;
+    margin-bottom: 6px;
+  }
+  
+  .ai-section li:hover {
+    background: #fafafa;
+  }
+  
+  .ai-section li span {
+    font-size: 12px;
+    font-weight: 700;
+    background: #eee;
+    padding: 4px 8px;
+    border-radius: 999px;
+  }
+  
+  .ai-empty {
+    font-size: 13px;
+    color: #777;
+    margin-top: 6px;
+  }
+  
+  /* INPUT */
+  .ai-chat-input {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid #eee;
+  }
+  
+  .ai-chat-input textarea {
+    flex: 1;
+    resize: none;
+    border-radius: 12px;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    outline: none;
+  }
+  
+  .ai-chat-input button {
+    width: 70px;
+    border: none;
+    border-radius: 12px;
+    background: #ffcc00;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  
+  .ai-chat-input button:disabled {
+    opacity: 0.6;
+  }
+  
+  /* ================= OVERRIDE – SCALE UP AI CHAT ================= */
+
+/* Tổng thể box to hơn */
+.ai-chat-box {
+    max-width: 560px;          /* tăng từ 520 */
+    border-radius: 22px;
+  }
+  
+  /* Header dày và rõ hơn */
+  .ai-chat-header {
+    padding: 18px 22px;
+    font-size: 17px;
+  }
+  
+  .ai-chat-header span {
+    font-size: 13px;
+  }
+  
+  /* Body thoáng hơn */
+  .ai-chat-body {
+    padding: 18px 22px;
+    gap: 14px;
+    max-height: 420px;         /* tăng chiều cao chat */
+  }
+  
+  /* Bubble to hơn */
+  .chat-bubble {
+    font-size: 15px;
+    padding: 14px 16px;
+    border-radius: 18px;
+  }
+  
+  /* Bubble user → xanh đậm thay vì đen */
+  .chat-bubble.user {
+    background: #00796b;
+    color: #ffffff;
+  }
+  
+  /* Bubble AI → xanh nhạt y tế */
+  .chat-bubble.ai {
+    background: #e0f7fa;
+    color: #004d5e;
+  }
+  
+  /* Item gợi ý AI */
+  .ai-section li {
+    padding: 10px 12px;
+    border-radius: 12px;
+  }
+  
+  .ai-section li span {
+    background: #00bcd4;
+    color: #ffffff;
+  }
+  
+  /* Input lớn hơn – dễ gõ */
+  .ai-chat-input {
+    padding: 16px;
+  }
+  
+  .ai-chat-input textarea {
+    min-height: 64px;
+    font-size: 15px;
+    padding: 14px 16px;
+    border-radius: 14px;
+  }
+  
+  /* Nút Gửi to & nổi hơn */
+  .ai-chat-input button {
+    width: 96px;
+    height: 52px;
+    font-size: 16px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #00bcd4, #4dd0e1);
+  }
+  
+  .ai-chat-input button:hover {
+    background: #ffcc00;
+    color: #004d5e;
+  }
+  
