@@ -5,8 +5,6 @@ import api from "../../services/http";
 
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 
-
-
 import {
   FaUser,
   FaPhoneAlt,
@@ -14,7 +12,6 @@ import {
   FaBirthdayCake,
   FaMapMarkerAlt,
 } from "react-icons/fa";
-
 
 function BookingDetail() {
   const navigate = useNavigate();
@@ -29,12 +26,9 @@ function BookingDetail() {
     );
   }
 
-    // Dữ liệu từ step trước
-    const doctor = state.doctor; // phải có id
+    const doctor = state.doctor;
     const selectedDate = state.date;
-    const selectedSlot = state.slot; // {id, slot}
-
-    // MỚI THÊM VÀO =============================================
+    const selectedSlot = state.slot;
     const [fullDoctor, setFullDoctor] = useState(null);
 
 useEffect(() => {
@@ -44,9 +38,7 @@ useEffect(() => {
   };
   loadDoctor();
 }, [doctor]);
- //==================================================
 
-  // FORM STATE
   const [form, setForm] = useState({
     fullname: "",
     gender: "Nam",
@@ -60,7 +52,6 @@ useEffect(() => {
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-
 
   const districtsData = {
     "Hà Nội": ["Đống Đa", "Ba Đình", "Hoàn Kiếm", "Thanh Xuân", "Cầu Giấy"],
@@ -123,8 +114,7 @@ useEffect(() => {
     if (!validateForm()) return;
   
     try {
-      setLoading(true); // bật loading
-
+      setLoading(true);
       const res = await api.post("/bookings", {
         patientName: form.fullname,
         gender: form.gender,
@@ -134,13 +124,9 @@ useEffect(() => {
         province: form.province,
         district: form.district,
         note: form.reason,
-
         doctorId: doctor.id,
         scheduleSlotId: selectedSlot.id,
-
         userAccountId: user ? user.id : null,
-
-        // Gửi thêm thông tin để email đầy đủ
         doctorName: doctor.name,
         doctorLocation: doctor.location,
         date: selectedDate,

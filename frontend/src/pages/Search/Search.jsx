@@ -1,103 +1,97 @@
-import './Search.css'
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Search.css";
 
-const specialties = ['Tổng quát', 'Tại nhà', 'Ung thư', 'NIPT', 'Sốt xuất huyết']
-const hospitals = [
-  'Bệnh viện Hữu nghị Việt Đức',
-  'Bệnh viện Chợ Rẫy',
-  'Doctor Check - Tầm Soát Bệnh Để Sống Thọ Hơn',
-  'Phòng khám Bệnh viện Đại học Y Dược 1',
-  'Bệnh viện Ung bướu Hưng Việt',
-]
+import AISuggestChat from "../../components/AI/AISuggestChat";
+import Specialgrid from "../../components/Specialgrid/Specialgrid";
+import Doctorcard from "../Booking/Doctorcard";
 
-const doctors = [
-  'BSCKII Nguyễn Tuấn Minh - Sản phụ khoa',
-  'GS.TS Hà Văn Quyết - Tiêu hóa - Viêm gan',
-  'Khám theo yêu cầu tại BV Lão khoa TW',
-  'PGS.TS Nguyễn Thị Hoài An - Tai Mũi Họng',
-  'TS.BS Vũ Thái Hà - Da liễu thẩm mỹ',
-]
+import { doctorService } from "../../services/doctorService";
 
-const generalPackages = [
-  'Gói khám Tổng quát cơ bản cho Nam',
-  'Gói khám Tổng quát VIP dành cho Nam (DC3M)',
-  'Gói khám Tổng quát VIP dành cho Nữ (DC3F)',
-  'Gói khám Sống Thọ dành cho Nam (DC4M)',
-  'Gói khám Sống Thọ dành cho Nữ (DC4F)',
-]
+export default function Search() {
+  const navigate = useNavigate();
 
-const tests = [
-  'Dịch vụ xét nghiệm tại nhà Diag Laboratories',
-  'Dịch vụ xét nghiệm tại hệ thống y tế Medlatec',
-  'Sàng lọc trước sinh không xâm lấn (NIPT 7)',
-  'Xét nghiệm PCR Covid - Diag Laboratories',
-  'Lấy mẫu xét nghiệm tại nhà Medlatec',
-]
+  const [doctors, setDoctors] = useState([]);
+  const [keyword, setKeyword] = useState("");
 
-function Search() {
+  useEffect(() => {
+    loadDoctors();
+  }, []);
+
+  const loadDoctors = async () => {
+    try {
+      const res = await doctorService.getAll();
+      setDoctors(res.data?.data || []);
+    } catch (err) {
+      console.error("Load doctors error", err);
+    }
+  };
+
+  const filteredDoctors = doctors.filter((d) =>
+    !keyword ||
+    d.fullName?.toLowerCase().includes(keyword.toLowerCase())
+  );
+
   return (
     <div className="search-page">
-      <div className="search-inner">
-        <div className="search-banner">
-          <input
-            className="search-big-input"
-            placeholder="Tìm tất cả"
-            type="text"
-          />
-          <button className="search-big-btn">Tất cả ⌄</button>
-        </div>
+      {/* ================= AI ================= */}
+      <section className="search-ai">
+        <AISuggestChat
+          onPickSpeciality={(s) => {
+            // 🔥 AI chọn chuyên khoa → ĐIỀU HƯỚNG
+            navigate(`/chuyen-khoa/${s.code}`);
+          }}
+          onPickDoctor={(d) => {
+            navigate(`/bac-si/thong-tin/${d.id}`);
+          }}
+        />
+      </section>
 
-        {/* Chuyên khoa */}
-        <section className="search-section">
-          <h3>Chuyên khoa</h3>
-          <ul>
-            {specialties.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </section>
+      {/* ================= FILTER ================= */}
+      <section className="search-filter">
+        <input
+          type="text"
+          placeholder="Tìm bác sĩ theo tên..."
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+        />
+      </section>
 
-        {/* Cơ sở y tế */}
-        <section className="search-section">
-          <h3>Cơ sở y tế</h3>
-          <ul>
-            {hospitals.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </section>
+      {/* ================= SPECIALITY GRID ================= */}
+      <section className="search-section">
+        <h2>Chuyên khoa</h2>
 
-        {/* Bác sĩ */}
-        <section className="search-section">
-          <h3>Bác sĩ</h3>
-          <ul>
-            {doctors.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </section>
+        {/* 🔥 DÙNG NGUYÊN Specialgrid – KHÔNG PROPS */}
+        <Specialgrid />
+      </section>
 
-        {/* Gói khám tổng quát */}
-        <section className="search-section">
-          <h3>Gói khám tổng quát / chụp / nội soi</h3>
-          <ul>
-            {generalPackages.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </section>
+      {/* ================= DOCTOR LIST ================= */}
+      <section className="search-section">
+        <h2>Bác sĩ</h2>
 
-        {/* Xét nghiệm */}
-        <section className="search-section">
-          <h3>Xét nghiệm</h3>
-          <ul>
-            {tests.map((item) => (
-              <li key={item}>{item}</li>
+        {filteredDoctors.length === 0 ? (
+          <div className="empty">Không tìm thấy bác sĩ phù hợp</div>
+        ) : (
+          <div className="doctor-list">
+            {filteredDoctors.map((d) => (
+              <Doctorcard
+                key={d.id}
+                id={d.id}
+                name={d.fullName}
+                desc={d.description || d.speciality?.title}
+                image={
+                  d.image
+                    ? `http://localhost:8080${d.image}`
+                    : "/default-doctor.png"
+                }
+                location={d.clinic?.address || "Đang cập nhật"}
+                expertise={d.speciality?.title}
+                schedule={d.schedules || []}
+              />
             ))}
-          </ul>
-        </section>
-      </div>
+          </div>
+        )}
+      </section>
     </div>
-  )
+  );
 }
-
-export default Search
