@@ -11,9 +11,8 @@ function Specialgrid({ limit }) {
     const fetchData = async () => {
       try {
         const res = await specialityService.getAllSpecialities();
-        let data = res.data.data || res.data; // ApiResponse hoặc list
+        let data = res.data.data || res.data;
 
-        // Nếu giới hạn số lượng
         if (limit) data = data.slice(0, limit);
 
         setSpecialities(data);

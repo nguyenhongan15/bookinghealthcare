@@ -16,10 +16,9 @@ export default function UserChatPopup({ initialDoctor, onClose, onFirstMessage }
   const [connected, setConnected] = useState(false);
   const [text, setText] = useState("");
 
-  const subRef = useRef(null);          // tránh subscribe trùng
-  const firstMsgNotifiedRef = useRef(false); // đã gọi onFirstMessage chưa
+  const subRef = useRef(null);
+  const firstMsgNotifiedRef = useRef(false);
 
-  // ================== LOAD PARTNERS ==================
   useEffect(() => {
     if (!userId) return;
     api.get(`/chat/partners/user/${userId}`).then((res) => {
@@ -27,7 +26,6 @@ export default function UserChatPopup({ initialDoctor, onClose, onFirstMessage }
     });
   }, [userId]);
 
-  // ================== WEBSOCKET ==================
   useEffect(() => {
     const client = new Client({
       brokerURL: import.meta.env.VITE_WS_BASE_URL,
@@ -45,13 +43,11 @@ export default function UserChatPopup({ initialDoctor, onClose, onFirstMessage }
     };
   }, []);
 
-  // ================== OPEN CHAT ==================
   const openChat = (doc) => {
     if (!connected || !doc) return;
 
     setCurrent(doc);
 
-    // load history
     api
       .get("/chat/history", {
         params: { doctorId: doc.id, userId },
@@ -60,10 +56,8 @@ export default function UserChatPopup({ initialDoctor, onClose, onFirstMessage }
         setMessages(res.data.data || []);
       });
 
-    // hủy subscribe cũ
     if (subRef.current) subRef.current.unsubscribe();
 
-    // subscribe room mới
     subRef.current = stompClient.subscribe(
       `/topic/room.${doc.id}.${userId}`,
       (msg) => {
@@ -73,7 +67,6 @@ export default function UserChatPopup({ initialDoctor, onClose, onFirstMessage }
     );
   };
 
-  // ================== AUTO OPEN DOCTOR KHI POPUP MỚI MỞ ==================
   useEffect(() => {
     if (initialDoctor && connected) {
       openChat({
@@ -84,13 +77,6 @@ export default function UserChatPopup({ initialDoctor, onClose, onFirstMessage }
     }
   }, [initialDoctor, connected]);
 
-//   useEffect(() => {
-//     if (initialDoctor && connected) {
-//       openChat(initialDoctor);
-//     }
-//   }, [initialDoctor, connected]);
-  
-  // ================== SEND MESSAGE ==================
   const sendMessage = () => {
     if (!current || !connected || !text.trim()) return;
 
@@ -104,7 +90,6 @@ export default function UserChatPopup({ initialDoctor, onClose, onFirstMessage }
       }),
     });
 
-    // thông báo lần đầu gửi tin (để App bật nút chat + lưu bác sĩ)
     if (!firstMsgNotifiedRef.current && onFirstMessage) {
       onFirstMessage(current);
       firstMsgNotifiedRef.current = true;

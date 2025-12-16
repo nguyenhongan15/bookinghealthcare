@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ScheduleCard.css";
 import { API_BASE } from "../../config/env";
+import api from "../../services/http";
 
 const VIET_DAY = {
   Mon: "Thứ 2",

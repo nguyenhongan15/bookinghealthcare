@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./AISuggestChat.css";
 import { aiService } from "../../services/aiService";
 
+
 export default function AISuggestChat({ onPickSpeciality, onPickDoctor }) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
