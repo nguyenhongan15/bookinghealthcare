@@ -11,7 +11,9 @@ import org.springframework.scheduling.annotation.Async;
 @RequiredArgsConstructor
 
 public class EmailService {
-    private final MailSenderService mailSenderService;
+
+    private final SendGridEmailService sendGridEmailService;
+
 
     @Async
     public void sendBookingEmail(
@@ -27,13 +29,10 @@ public class EmailService {
             String address
     ) {
         try{
-        String title = (gender != null && gender.equalsIgnoreCase("Nam"))
-                ? "Ông"
-                : "Bà";
+            String title = (gender != null && gender.equalsIgnoreCase("Nam")) ? "Ông" : "Bà";
+            String fullNameFormatted = title + " " + patientName;
 
-        String fullNameFormatted = title + " " + patientName;
-
-        String subject = " Xác nhận đặt lịch khám";
+            String subject = "Xác nhận đặt lịch khám";
 
         String html = """
             <div style="font-family: Arial, sans-serif; width: 400px; 
@@ -117,7 +116,8 @@ public class EmailService {
                 address 
         );
 
-        mailSenderService.sendHtmlEmail(toEmail, subject, html);
+        sendGridEmailService.sendHtmlEmail(toEmail, subject, html);
+
     } catch (Exception e) {
         System.out.println("⚠ Không gửi được phiếu khám: " + e.getMessage());
     }}
@@ -153,66 +153,34 @@ public class EmailService {
             """;
 
         html = String.format(html, fullName, username, password);
-        mailSenderService.sendHtmlEmail(toEmail, subject, html);
+        sendGridEmailService.sendHtmlEmail(toEmail, subject, html);
     }catch (Exception e) {
         System.out.println("⚠ Không gửi được email tài khoản: " + e.getMessage());
     }
-}
-    public void sendDoctorAccountEmail(String toEmail, String fullName, String username, String password) {
+    }
 
-        String subject = "Thông báo tài khoản dành cho Bác sĩ - BookingHealthcare";
+    @Async
+    public void sendReminderEmail(
+            String toEmail,
+            String patientName,
+            String doctorName,
+            String appointmentTime,
+            String clinicName
+    ) {
+        String subject = "⏰ Nhắc lịch khám";
 
         String html = """
-            <div style="font-family: Arial, sans-serif; width: 450px; background: #ffffff; 
-                        border-radius: 10px; padding: 30px; border: 1px solid #e0e6ed;">
+            <h3>Xin chào %s</h3>
+            <p>Bạn có lịch khám sắp tới:</p>
+            <ul>
+                <li>Bác sĩ: %s</li>
+                <li>Thời gian: %s</li>
+                <li>Phòng khám: %s</li>
+            </ul>
+        """.formatted(patientName, doctorName, appointmentTime, clinicName);
 
-                <h2 style="text-align:center; color:#00C8D2;">TÀI KHOẢN BÁC SĨ</h2>
-
-                <p>Xin chào BS <strong>%s</strong>,</p>
-
-                <p>Hệ thống đã tạo tài khoản dành cho bác sĩ để quản lý lịch khám và trò chuyện với bệnh nhân.</p>
-
-                <p>Thông tin tài khoản:</p>
-                <ul>
-                    <li><strong>Tên đăng nhập:</strong> %s</li>
-                    <li><strong>Mật khẩu:</strong> %s</li>
-                    </ul>
-
-                <p>Vui lòng đăng nhập và đổi mật khẩu để bảo mật.</p>
-
-                <p style="text-align:center; margin-top:10px; color:#6c757d;">
-                    Trân trọng,<br>BookingHealthcare
-                </p>
-            </div>
-            """;
-
-        html = String.format(html, fullName, username, password);
-        mailSenderService.sendHtmlEmail(toEmail, subject, html);
+        sendGridEmailService.sendHtmlEmail(toEmail, subject, html);
     }
-    
-    @Async
-public void sendReminderEmail(
-        String toEmail,
-        String patientName,
-        String doctorName,
-        String appointmentTime,
-        String clinicName
-) {
-    String subject = "⏰ Nhắc lịch khám sắp tới";
-
-    String html = """
-        <h3>Xin chào %s,</h3>
-        <p>Bạn có lịch khám sắp tới:</p>
-        <ul>
-            <li><b>Bác sĩ:</b> %s</li>
-            <li><b>Thời gian:</b> %s</li>
-            <li><b>Phòng khám:</b> %s</li>
-        </ul>
-        <p>Vui lòng đến đúng giờ. Xin cảm ơn!</p>
-    """.formatted(patientName, doctorName, appointmentTime, clinicName);
-
-    mailSenderService.sendHtmlEmail(toEmail, subject, html);
-}
 }
 
 
