@@ -1,10 +1,8 @@
 package com.bookinghealthcare.backend.service;
 
 
-import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+
 import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Async;
 
@@ -13,7 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 @RequiredArgsConstructor
 
 public class EmailService {
-    private final JavaMailSender mailSender;
+    private final MailSenderService mailSenderService;
 
     @Async
     public void sendBookingEmail(
@@ -119,30 +117,11 @@ public class EmailService {
                 address 
         );
 
-        sendHtmlEmail(toEmail, subject, html);
+        mailSenderService.sendHtmlEmail(toEmail, subject, html);
     } catch (Exception e) {
         System.out.println("⚠ Không gửi được phiếu khám: " + e.getMessage());
     }}
     
-    private void sendHtmlEmail(String to, String subject, String html) {
-        try {
-            System.out.println("📧 Sending email to: " + to);
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper =
-                    new MimeMessageHelper(message, true, "UTF-8");
-
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setFrom("HealthCare Booking <vma33169@gmail.com>");
-            helper.setText(html, true);
-
-            mailSender.send(message);
-            System.out.println("✅ Email sent successfully to: " + to);
-
-        } catch (Exception e) {
-            System.out.println("❌ Email failed to " + to + " | " + e.getMessage());
-        }
-    }
 
     @Async
     public void sendUserAccountEmail(String toEmail, String fullName, String username, String password) {
@@ -174,11 +153,11 @@ public class EmailService {
             """;
 
         html = String.format(html, fullName, username, password);
-        sendHtmlEmail(toEmail, subject, html);
+        mailSenderService.sendHtmlEmail(toEmail, subject, html);
     }catch (Exception e) {
         System.out.println("⚠ Không gửi được email tài khoản: " + e.getMessage());
-    }}
-
+    }
+}
     public void sendDoctorAccountEmail(String toEmail, String fullName, String username, String password) {
 
         String subject = "Thông báo tài khoản dành cho Bác sĩ - BookingHealthcare";
@@ -208,45 +187,32 @@ public class EmailService {
             """;
 
         html = String.format(html, fullName, username, password);
-            sendHtmlEmail(toEmail, subject, html);
+        mailSenderService.sendHtmlEmail(toEmail, subject, html);
     }
-
-    public void sendReminderEmail(
+    
+    @Async
+public void sendReminderEmail(
         String toEmail,
         String patientName,
         String doctorName,
         String appointmentTime,
         String clinicName
-    ) {
+) {
+    String subject = "⏰ Nhắc lịch khám sắp tới";
 
-        try {
-            
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+    String html = """
+        <h3>Xin chào %s,</h3>
+        <p>Bạn có lịch khám sắp tới:</p>
+        <ul>
+            <li><b>Bác sĩ:</b> %s</li>
+            <li><b>Thời gian:</b> %s</li>
+            <li><b>Phòng khám:</b> %s</li>
+        </ul>
+        <p>Vui lòng đến đúng giờ. Xin cảm ơn!</p>
+    """.formatted(patientName, doctorName, appointmentTime, clinicName);
 
-            helper.setTo(toEmail);
-            helper.setSubject("⏰ Nhắc lịch khám sắp tới");
-            helper.setFrom("HealthCare Booking <vma33169@gmail.com>");
-
-
-            String content = """
-                <h3>Xin chào %s,</h3>
-                <p>Bạn có lịch khám sắp tới:</p>
-                <ul>
-                    <li><b>Bác sĩ:</b> %s</li>
-                    <li><b>Thời gian:</b> %s</li>
-                    <li><b>Phòng khám:</b> %s</li>
-                </ul>
-                <p>Vui lòng đến đúng giờ. Xin cảm ơn!</p>
-            """.formatted(patientName, doctorName, appointmentTime, clinicName);
-
-            helper.setText(content, true);
-            mailSender.send(message);
-
-        } catch (Exception e) {
-            throw new RuntimeException("Không gửi được email nhắc lịch");
-        }
-    }
+    mailSenderService.sendHtmlEmail(toEmail, subject, html);
+}
 }
 
 
