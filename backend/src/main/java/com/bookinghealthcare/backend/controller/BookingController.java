@@ -127,32 +127,41 @@ public class BookingController {
         //         System.out.println("⚠ Không gửi được email tạo tài khoản: " + e.getMessage());
         //     }
         // }
-        if (needWelcomeEmail && account.getEmail() != null) {
-            emailService.sendUserAccountEmail(
-                    account.getEmail(),
-                    req.getPatientName(),
-                    account.getUsername(),
-                    req.getPatientPhone()
-            );
+        if (needWelcomeEmail && account.getEmail() != null && !account.getEmail().isBlank()) {
+            try {
+                emailService.sendUserAccountEmail(
+                        account.getEmail(),
+                        req.getPatientName(),
+                        account.getUsername(),
+                        req.getPatientPhone()
+                );
         
-            account.setWelcomeEmailSent(true);
-            userAccountService.save(account);
+                account.setWelcomeEmailSent(true);
+                userAccountService.save(account);
+            } catch (Exception e) {
+                System.out.println("⚠ Welcome email failed: " + e.getMessage());
+            }
         }
 
-         if (bookingEmail != null && !bookingEmail.isBlank()) {
-            emailService.sendBookingEmail(
-                    bookingEmail,
-                    req.getPatientName(),
-                    req.getGender(),
-                    String.valueOf(req.getBirthyear()),
-                    req.getPatientPhone(),
-                    doctor.getName(),
-                    req.getDate(),
-                    slot.getSlot(),
-                    doctor.getClinic().getName(),
-                    doctor.getClinic().getAddress()
-            );
+        if (bookingEmail != null && !bookingEmail.isBlank()) {
+            try {
+                emailService.sendBookingEmail(
+                        bookingEmail,
+                        req.getPatientName(),
+                        req.getGender(),
+                        String.valueOf(req.getBirthyear()),
+                        req.getPatientPhone(),
+                        doctor.getName(),
+                        req.getDate(),
+                        slot.getSlot(),
+                        doctor.getClinic().getName(),
+                        doctor.getClinic().getAddress()
+                );
+            } catch (Exception e) {
+                System.out.println("⚠ Booking email failed: " + e.getMessage());
+            }
         }
+        
         return ApiResponse.success("Booking created", booking);
     }
 

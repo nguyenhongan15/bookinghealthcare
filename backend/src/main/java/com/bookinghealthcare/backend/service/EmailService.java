@@ -1,5 +1,6 @@
 package com.bookinghealthcare.backend.service;
 
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,6 +14,7 @@ import org.springframework.scheduling.annotation.Async;
 
 public class EmailService {
     private final JavaMailSender mailSender;
+
     @Async
     public void sendBookingEmail(
             String toEmail,
@@ -135,7 +137,7 @@ public class EmailService {
 
             mailSender.send(message);
 
-        } catch (Exception e) {
+        } catch (MessagingException e) {
             System.out.println("⚠ Gửi mail thất bại: " + e.getMessage());
         }
     }
@@ -170,7 +172,7 @@ public class EmailService {
             """;
 
         html = String.format(html, fullName, username, password);
-            sendHtmlEmail(toEmail, subject, html);
+        sendHtmlEmail(toEmail, subject, html);
     }catch (Exception e) {
         System.out.println("⚠ Không gửi được email tài khoản: " + e.getMessage());
     }}
