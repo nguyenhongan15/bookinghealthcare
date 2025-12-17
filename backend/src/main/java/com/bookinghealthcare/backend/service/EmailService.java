@@ -1,6 +1,6 @@
 package com.bookinghealthcare.backend.service;
 
-import jakarta.mail.MessagingException;
+
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -126,6 +126,7 @@ public class EmailService {
     
     private void sendHtmlEmail(String to, String subject, String html) {
         try {
+            System.out.println("📧 Sending email to: " + to);
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper =
                     new MimeMessageHelper(message, true, "UTF-8");
@@ -136,9 +137,12 @@ public class EmailService {
             helper.setText(html, true);
 
             mailSender.send(message);
+            System.out.println("✅ Email sent successfully to: " + to);
 
-        } catch (MessagingException e) {
-            System.out.println("⚠ Gửi mail thất bại: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("❌ EMAIL ERROR: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to send email", e);
         }
     }
 
@@ -218,6 +222,7 @@ public class EmailService {
     ) {
 
         try {
+            
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
