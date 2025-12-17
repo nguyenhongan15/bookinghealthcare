@@ -69,16 +69,6 @@ public class BookingController {
                 );
             }
         }
-        
-
-        if (account == null) {
-            account = userAccountService.createUserAccountWhenGuestBooking(
-                req.getPatientName(),
-                null,                  // ❗ email = null
-                req.getPatientPhone()
-            );
-        }
- 
 
         Booking booking = new Booking();
         booking.setUserAccountId(account.getId());
@@ -146,6 +136,7 @@ public class BookingController {
                         doctor.getClinic().getName(),
                         doctor.getClinic().getAddress()
                 );
+                System.out.println("📧 Booking email sent to: " + req.getEmail());
             } catch (Exception e) {
                 System.out.println("⚠ Booking email failed: " + e.getMessage());
             }
