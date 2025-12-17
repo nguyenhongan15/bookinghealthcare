@@ -1,19 +1,19 @@
 package com.bookinghealthcare.backend.service;
 
-import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Async;
+
 
 @Service
 @RequiredArgsConstructor
+
 public class EmailService {
-
     private final JavaMailSender mailSender;
-    
-
+    @Async
     public void sendBookingEmail(
             String toEmail,
             String patientName,
@@ -26,18 +26,15 @@ public class EmailService {
             String clinicName,
             String address
     ) {
-
-        // Xưng hô
+        try{
         String title = (gender != null && gender.equalsIgnoreCase("Nam"))
                 ? "Ông"
                 : "Bà";
 
-        // Tên + giới tính (gộp một dòng)
         String fullNameFormatted = title + " " + patientName;
 
         String subject = " Xác nhận đặt lịch khám";
 
-        // HTML TEMPLATE
         String html = """
             <div style="font-family: Arial, sans-serif; width: 400px; 
                     background: #ffffff; border-radius: 10px; padding: 35px 45px;font-size:16px;
@@ -108,7 +105,6 @@ public class EmailService {
             </div>
             """;
 
-        // Chèn dữ liệu vào HTML
         html = String.format(
                 html, 
                 fullNameFormatted, 
@@ -122,8 +118,10 @@ public class EmailService {
         );
 
         sendHtmlEmail(toEmail, subject, html);
-    }
-
+    } catch (Exception e) {
+        System.out.println("⚠ Không gửi được phiếu khám: " + e.getMessage());
+    }}
+    
     private void sendHtmlEmail(String to, String subject, String html) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -137,14 +135,14 @@ public class EmailService {
 
             mailSender.send(message);
 
-        } catch (MessagingException e) {
-            throw new RuntimeException("Failed to send email", e);
+        } catch (Exception e) {
+            System.out.println("⚠ Gửi mail thất bại: " + e.getMessage());
         }
     }
 
-    // 🟢 1. Gửi email tài khoản USER
+    @Async
     public void sendUserAccountEmail(String toEmail, String fullName, String username, String password) {
-
+        try{
         String subject = "Thông báo tạo tài khoản BookingHealthcare";
 
         String html = """
@@ -173,9 +171,10 @@ public class EmailService {
 
         html = String.format(html, fullName, username, password);
             sendHtmlEmail(toEmail, subject, html);
-    }
+    }catch (Exception e) {
+        System.out.println("⚠ Không gửi được email tài khoản: " + e.getMessage());
+    }}
 
-    // 🟢 2. Gửi email tài khoản DOCTOR
     public void sendDoctorAccountEmail(String toEmail, String fullName, String username, String password) {
 
         String subject = "Thông báo tài khoản dành cho Bác sĩ - BookingHealthcare";
