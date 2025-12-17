@@ -39,6 +39,10 @@ public class UserAccountService {
     
         return null;
     }
+    public UserAccount findByPhone(String phone) {
+        if (phone == null || phone.isBlank()) return null;
+        return repo.findByPhone(phone).orElse(null);
+    }
     
     
 
