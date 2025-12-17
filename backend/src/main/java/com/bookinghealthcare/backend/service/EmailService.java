@@ -140,9 +140,7 @@ public class EmailService {
             System.out.println("✅ Email sent successfully to: " + to);
 
         } catch (Exception e) {
-            System.out.println("❌ EMAIL ERROR: " + e.getMessage());
-            e.printStackTrace();
-            throw new RuntimeException("Failed to send email", e);
+            System.out.println("❌ Email failed to " + to + " | " + e.getMessage());
         }
     }
 

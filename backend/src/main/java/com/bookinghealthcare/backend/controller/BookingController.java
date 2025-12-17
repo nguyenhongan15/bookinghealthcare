@@ -58,17 +58,27 @@ public class BookingController {
 
         if (req.getUserAccountId() != null) {
             account = userAccountService.getById(req.getUserAccountId());
-        }
-        else {
-            account = userAccountService.findByPhoneOrEmail(req.getPatientPhone(), req.getEmail());
+        } else {
+            account = userAccountService.findByPhone(req.getPatientPhone());
+        
             if (account == null) {
                 account = userAccountService.createUserAccountWhenGuestBooking(
-                        req.getPatientName(),
-                        req.getEmail(),
-                        req.getPatientPhone()
+                    req.getPatientName(),
+                    null,                 // ❗ KHÔNG BAO GIỜ set email ở booking
+                    req.getPatientPhone()
                 );
             }
-        }   
+        }
+        
+
+        if (account == null) {
+            account = userAccountService.createUserAccountWhenGuestBooking(
+                req.getPatientName(),
+                null,                  // ❗ email = null
+                req.getPatientPhone()
+            );
+        }
+ 
 
         Booking booking = new Booking();
         booking.setUserAccountId(account.getId());
@@ -102,31 +112,8 @@ public class BookingController {
                 needWelcomeEmail = true;
             }
         }
-        else {
-            if (bookingEmail != null && !bookingEmail.isBlank()) {
-                account.setEmail(bookingEmail);
-                if (!account.isWelcomeEmailSent()) {
-                    needWelcomeEmail = true;
-                }
-            }
-        }
+        
 
-        // if (needWelcomeEmail) {
-        //     try {
-        //         emailService.sendUserAccountEmail(
-        //                 account.getEmail(),
-        //                 req.getPatientName(),
-        //                 account.getUsername(),
-        //                 req.getPatientPhone()
-        //         );
-
-        //         account.setWelcomeEmailSent(true);
-        //         userAccountService.save(account);
-
-        //     } catch (Exception e) {
-        //         System.out.println("⚠ Không gửi được email tạo tài khoản: " + e.getMessage());
-        //     }
-        // }
         if (needWelcomeEmail && account.getEmail() != null && !account.getEmail().isBlank()) {
             try {
                 emailService.sendUserAccountEmail(
