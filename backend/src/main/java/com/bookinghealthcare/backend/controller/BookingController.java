@@ -9,7 +9,6 @@ import com.bookinghealthcare.backend.service.EmailService;
 import com.bookinghealthcare.backend.auth.UserAccount;
 import com.bookinghealthcare.backend.auth.UserAccountService;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +19,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
-
-
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -86,15 +83,13 @@ public class BookingController {
         booking.setPrice(500000);
         booking.setUserAccountId(account.getId());
 
-        // slot.getSlot() = "08:00 - 09:00"
-        String slotTime = slot.getSlot().split("-")[0].trim(); // "08:00"
+        String slotTime = slot.getSlot().split("-")[0].trim();
 
         LocalDate date = LocalDate.parse(req.getDate());
         LocalTime time = LocalTime.parse(slotTime);
 
         booking.setAppointmentAt(LocalDateTime.of(date, time));
         booking.setReminderSent(false);
-
 
         bookingRepository.save(booking);
 
@@ -115,27 +110,38 @@ public class BookingController {
                 }
             }
         }
-        // ========== Gửi email tạo tài khoản nếu cần ==========
-        if (needWelcomeEmail) {
-            try {
-                emailService.sendUserAccountEmail(
-                        account.getEmail(),        // gửi về email tài khoản
-                        req.getPatientName(),
-                        account.getUsername(),
-                        req.getPatientPhone()
-                );
 
-                account.setWelcomeEmailSent(true);
-                userAccountService.save(account);
+        // if (needWelcomeEmail) {
+        //     try {
+        //         emailService.sendUserAccountEmail(
+        //                 account.getEmail(),
+        //                 req.getPatientName(),
+        //                 account.getUsername(),
+        //                 req.getPatientPhone()
+        //         );
 
-            } catch (Exception e) {
-                System.out.println("⚠ Không gửi được email tạo tài khoản: " + e.getMessage());
-            }
+        //         account.setWelcomeEmailSent(true);
+        //         userAccountService.save(account);
+
+        //     } catch (Exception e) {
+        //         System.out.println("⚠ Không gửi được email tạo tài khoản: " + e.getMessage());
+        //     }
+        // }
+        if (needWelcomeEmail && account.getEmail() != null) {
+            emailService.sendUserAccountEmail(
+                    account.getEmail(),
+                    req.getPatientName(),
+                    account.getUsername(),
+                    req.getPatientPhone()
+            );
+        
+            account.setWelcomeEmailSent(true);
+            userAccountService.save(account);
         }
-         // ========== Gửi phiếu khám ==========
+
          if (bookingEmail != null && !bookingEmail.isBlank()) {
             emailService.sendBookingEmail(
-                    bookingEmail,                  // gửi về email user nhập khi đặt lịch
+                    bookingEmail,
                     req.getPatientName(),
                     req.getGender(),
                     String.valueOf(req.getBirthyear()),
@@ -147,7 +153,6 @@ public class BookingController {
                     doctor.getClinic().getAddress()
             );
         }
-
         return ApiResponse.success("Booking created", booking);
     }
 
