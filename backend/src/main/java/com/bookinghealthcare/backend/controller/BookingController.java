@@ -107,6 +107,8 @@ public class BookingController {
         String accountEmail = account.getEmail(); 
         boolean needWelcomeEmail = false;
 
+        System.out.println("📨 bookingEmail = [" + req.getEmail() + "]");
+
         if (accountEmail != null && !accountEmail.isBlank()) {
             if (!account.isWelcomeEmailSent()) {
                 needWelcomeEmail = true;
@@ -130,7 +132,7 @@ public class BookingController {
             }
         }
 
-        if (bookingEmail != null && !bookingEmail.isBlank()) {
+        if (req.getEmail() != null && !req.getEmail().isBlank()) {
             try {
                 emailService.sendBookingEmail(
                         bookingEmail,
