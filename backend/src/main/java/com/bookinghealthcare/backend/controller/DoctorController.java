@@ -9,7 +9,6 @@ import com.bookinghealthcare.backend.repository.ClinicRepository;
 import com.bookinghealthcare.backend.repository.DoctorRepository;
 import com.bookinghealthcare.backend.repository.SpecialityRepository;
 
-import com.bookinghealthcare.backend.service.EmailService;
 import com.bookinghealthcare.backend.utils.UsernameUtils;
 
 
@@ -35,7 +34,6 @@ public class DoctorController {
 
     private final UserAccountRepository userAccountRepository;
     private final PasswordEncoder passwordEncoder;
-    private final EmailService emailService;
 
 
     // 🔵 GET: Lấy tất cả bác sĩ
@@ -92,17 +90,6 @@ public class DoctorController {
         // lưu username vào bảng doctor
         doctor.setLoginUsername(username);
         doctorRepository.save(doctor);
-
-        if (req.getEmail() != null && !req.getEmail().isEmpty()) {
-            emailService.sendDoctorAccountEmail(
-                    req.getEmail(),
-                    req.getName(),
-                    username,
-                    rawPassword
-            ); 
-        }
-        
-
         return ApiResponse.success("Doctor created", doctor);
     }
 
