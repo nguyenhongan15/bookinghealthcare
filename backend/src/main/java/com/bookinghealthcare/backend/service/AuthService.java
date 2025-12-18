@@ -32,7 +32,10 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("Sai tên đăng nhập hoặc mật khẩu"));
 
 
-        boolean match = req.getPassword().equals(account.getPhone());
+        boolean match = passwordEncoder.matches(
+                    req.getPassword(),      // frontend gửi phone
+                    account.getPassword()   // DB lưu encode(phone)
+        ); 
         if (!match) {
             throw new RuntimeException("Sai tên đăng nhập hoặc mật khẩu");
         }
@@ -64,7 +67,7 @@ public class AuthService {
         acc.setUsername(req.getUsername());
         acc.setFullName(req.getFullName());
         acc.setPhone(req.getPhone());
-        acc.setPassword(passwordEncoder.encode(req.getPassword()));
+        acc.setPassword(passwordEncoder.encode(req.getPhone()));
         acc.setRole(Role.USER);
         acc.setEmail(
             (req.getEmail() != null && !req.getEmail().isBlank())
