@@ -199,7 +199,14 @@ public class BookingController {
 
         return ApiResponse.success("Doctor schedule", result);
     }
-
+    @GetMapping("/user-schedule")
+    public ApiResponse<?> getUserSchedule(@RequestParam Long userId) {
+    
+        List<Booking> list =
+            bookingRepository.findByUserAccountIdOrderByCreatedAtDesc(userId);
+    
+        return ApiResponse.success("User schedule", list);
+    }
 
     @PutMapping("/{id}/status")
     public ApiResponse<?> updateStatus(@PathVariable Integer id,
@@ -214,14 +221,6 @@ public class BookingController {
         return ApiResponse.success("Booking status updated", booking);
     }
 
-    // @DeleteMapping("/{id}")
-    // public ApiResponse<?> delete(@PathVariable Integer id) {
-    //     if (!bookingRepository.existsById(id)) {
-    //         throw new RuntimeException("Booking not found");
-    //     }
-    //     bookingRepository.deleteById(id);
-    //     return ApiResponse.success("Booking deleted", null);
-    // }
     @DeleteMapping("/{id}")
     public ApiResponse<?> delete(@PathVariable Integer id) {
 
