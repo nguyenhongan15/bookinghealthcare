@@ -131,7 +131,7 @@ export default function RegisterLoginPopup({ onClose, onUpdated }) {
                   onChange={(e) => setLoginUser(e.target.value)}
                 />
 
-                <label>Mật khẩu</label>
+                <label>Số điện thoại</label>
                 <input
                   type="password"
                   value={loginPass}
