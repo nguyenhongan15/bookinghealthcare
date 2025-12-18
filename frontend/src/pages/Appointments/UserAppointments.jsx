@@ -16,7 +16,9 @@ export default function UserAppointments() {
   const [showCancelPopup, setShowCancelPopup] = useState(false);
   const [selectedBookingId, setSelectedBookingId] = useState(null);
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const rawUser = localStorage.getItem("user");
+  const user = rawUser ? JSON.parse(rawUser) : null;
+
   const userId = user?.id;
 
   const [now, setNow] = useState(new Date());
