@@ -38,7 +38,7 @@ export default function UserAppointments() {
     if (!userId) return;
   
     bookingService
-      .getUserSchedule(userId)
+      .getByUserId(userId)
       .then((res) => {
         const data = res.data?.data || [];
         setAppointments(data);
@@ -48,7 +48,7 @@ export default function UserAppointments() {
         console.error("❌ Lỗi lấy lịch hẹn:", err);
       })
       .finally(() => {
-        setLoading(false);
+        setLoading(false); // ✅ BẮT BUỘC
       });
   }, [userId]);
   
@@ -204,7 +204,7 @@ export default function UserAppointments() {
             booking={reviewBooking}
             onClose={() => setReviewBooking(null)}
             onSuccess={() => {
-              bookingService.getUserSchedule(userId).then(res => {
+              bookingService.getByUserId(userId).then(res => {
                 const data = res.data?.data || [];
                 setAppointments(data);
                 setFilteredAppointments(data);
