@@ -34,10 +34,11 @@ export default function UserAppointments() {
     );
   }
 
-  // 🔄 Load lịch hẹn
   useEffect(() => {
+    if (!userId) return;
+  
     bookingService
-      .getByUserId(userId)
+      .getUserSchedule(userId)
       .then((res) => {
         const data = res.data?.data || [];
         setAppointments(data);
@@ -50,6 +51,7 @@ export default function UserAppointments() {
         setLoading(false);
       });
   }, [userId]);
+  
 
   // 🔍 LỌC THEO NGÀY
   useEffect(() => {
@@ -202,11 +204,11 @@ export default function UserAppointments() {
             booking={reviewBooking}
             onClose={() => setReviewBooking(null)}
             onSuccess={() => {
-                bookingService.getByUserId(userId).then(res => {
-                    const data = res.data?.data || [];
-                    setAppointments(data);
-                    setFilteredAppointments(data);
-                });
+              bookingService.getUserSchedule(userId).then(res => {
+                const data = res.data?.data || [];
+                setAppointments(data);
+                setFilteredAppointments(data);
+              });
             }}
        />
        )}

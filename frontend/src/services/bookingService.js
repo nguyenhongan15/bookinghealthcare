@@ -25,6 +25,12 @@ export const bookingService = {
 
   getByUserId: (userId) =>
     api.get(`/bookings/user/${userId}`),
+
+  getUserSchedule: (userId) =>
+    api.get("/bookings/user-schedule", {
+      params: { userId },
+    }),
+  
   
 
   // Xoá booking
