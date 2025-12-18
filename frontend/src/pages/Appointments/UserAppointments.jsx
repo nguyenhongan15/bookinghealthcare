@@ -26,102 +26,80 @@ export default function UserAppointments() {
 
 
 
-  // ❌ Chưa đăng nhập
+ // 🔹 LOAD DATA
+ useEffect(() => {
   if (!userId) {
-    return (
-      <div className="appointments-page">
-        <h1>Lịch khám của tôi</h1>
-        <div className="empty">Vui lòng đăng nhập để xem lịch hẹn</div>
-      </div>
+    setLoading(false);
+    return;
+  }
+
+  bookingService
+    .getByUserId(userId)
+    .then((res) => {
+      const data = res.data?.data || [];
+      setAppointments(data);
+      setFilteredAppointments(data);
+    })
+    .catch((err) => {
+      console.error("❌ Lỗi lấy lịch hẹn:", err);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+}, [userId]);
+
+// 🔹 FILTER
+useEffect(() => {
+  if (!selectedDate) {
+    setFilteredAppointments(appointments);
+  } else {
+    setFilteredAppointments(
+      appointments.filter((b) => b.date === selectedDate)
     );
   }
+}, [selectedDate, appointments]);
 
-  useEffect(() => {
-    if (!userId) return;
-  
-    bookingService
-      .getByUserId(userId)
-      .then((res) => {
-        const data = res.data?.data || [];
-        setAppointments(data);
-        setFilteredAppointments(data);
-      })
-      .catch((err) => {
-        console.error("❌ Lỗi lấy lịch hẹn:", err);
-      })
-      .finally(() => {
-        setLoading(false); // ✅ BẮT BUỘC
-      });
-  }, [userId]);
-  
+// 🔹 CLOCK
+useEffect(() => {
+  const timer = setInterval(() => setNow(new Date()), 30000);
+  return () => clearInterval(timer);
+}, []);
 
-  // 🔍 LỌC THEO NGÀY
-  useEffect(() => {
-    if (!selectedDate) {
-      setFilteredAppointments(appointments);
-    } else {
-      setFilteredAppointments(
-        appointments.filter((b) => b.date === selectedDate)
-      );
-    }
-  }, [selectedDate, appointments]);
+// 🔹 ACTIONS
+const openCancelPopup = (bookingId) => {
+  setSelectedBookingId(bookingId);
+  setShowCancelPopup(true);
+};
 
-  // ⏳ Loading
-  if (loading) {
-    return <div className="appointments-page">Đang tải lịch hẹn...</div>;
+const confirmCancel = async () => {
+  try {
+    await bookingService.updateStatus(selectedBookingId, "CANCELLED");
+    setAppointments((prev) =>
+      prev.map((b) =>
+        b.id === selectedBookingId ? { ...b, status: "CANCELLED" } : b
+      )
+    );
+  } catch (err) {
+    alert("Không thể huỷ lịch");
+  } finally {
+    setShowCancelPopup(false);
+    setSelectedBookingId(null);
   }
+};
 
-  // 👉 MỞ POPUP HUỶ
-  const openCancelPopup = (bookingId) => {
-    setSelectedBookingId(bookingId);
-    setShowCancelPopup(true);
-  };
+// 🔹 RENDER CONDITIONS
+if (!userId) {
+  return (
+    <div className="appointments-page">
+      <h1>Lịch khám của tôi</h1>
+      <div className="empty">Vui lòng đăng nhập để xem lịch hẹn</div>
+    </div>
+  );
+}
 
-  // ✅ XÁC NHẬN HUỶ
-  const confirmCancel = async () => {
-    try {
-      await bookingService.updateStatus(selectedBookingId, "CANCELLED");
-
-      setAppointments((prev) =>
-        prev.map((b) =>
-          b.id === selectedBookingId
-            ? { ...b, status: "CANCELLED" }
-            : b
-        )
-      );
-    } catch (err) {
-      alert("Không thể huỷ lịch, vui lòng thử lại");
-      console.error(err);
-    } finally {
-      setShowCancelPopup(false);
-      setSelectedBookingId(null);
-    }
-  };
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setNow(new Date());
-    }, 30000); // 30 giây update 1 lần
-  
-    return () => clearInterval(timer);
-  }, []);
-  
-  function getSlotEndDateTime(item) {
-    // item.date = "2025-12-18"
-    // item.scheduleSlot.slot = "09:00 - 10:00"
-    if (!item.date || !item.scheduleSlot?.slot) return null;
-  
-    const endTime = item.scheduleSlot.slot.split(" - ")[1]; // "10:00"
-    return new Date(`${item.date}T${endTime}`);
-  }
-  
-  function canReview(item) {
-    const slotEnd = getSlotEndDateTime(item);
-    if (!slotEnd) return false;
-  
-    return now > slotEnd && item.reviewed !== true;
-  }
-  
+if (loading) {
+  return <div className="appointments-page">Đang tải lịch hẹn...</div>;
+}
 
   return (
     <div className="appointments-page">
