@@ -43,34 +43,40 @@ public class UserAccountService {
         if (phone == null || phone.isBlank()) return null;
         return repo.findByPhone(phone).orElse(null);
     }
-    
-    
-
     public UserAccount createUserAccountWhenGuestBooking(String fullName,
-                                                        String email,
-                                                        String phone) {
+        String email,
+        String phone) {
 
+        // 1️⃣ Check tồn tại trước
+        UserAccount existed = findByPhoneOrEmail(phone, email);
+        if (existed != null) {
+                return existed;
+        }
+
+        // 2️⃣ Generate username unique
         String baseUsername = UsernameUtils.toUsername(fullName);
         String username = baseUsername;
         int suffix = 1;
 
         while (repo.existsByUsername(username)) {
-                username = baseUsername + suffix;
-                suffix++;
+            username = baseUsername + suffix;
+            suffix++;
         }
 
+        // 3️⃣ Password mặc định = phone
         String rawPass = phone;
 
+        // 4️⃣ TẠO USER MỚI (CÓ EMAIL)
         UserAccount account = UserAccount.builder()
-                .username(username)
-                .password(passwordEncoder.encode(rawPass))
-                .email(null)
-                .phone(phone)
-                .fullName(fullName)
-                .role(Role.USER)
-                .createdAt(LocalDateTime.now())
-                .welcomeEmailSent(false)
-                .build();
+            .username(username)
+            .password(passwordEncoder.encode(rawPass))
+            .email(email)                 // ✅ KHÔNG ĐƯỢC null
+            .phone(phone)
+            .fullName(fullName)
+            .role(Role.USER)
+            .createdAt(LocalDateTime.now())
+            .welcomeEmailSent(false)
+            .build();
 
         return repo.save(account);
     }

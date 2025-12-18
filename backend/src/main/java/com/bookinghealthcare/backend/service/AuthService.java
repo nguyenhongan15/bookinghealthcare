@@ -5,6 +5,7 @@ import com.bookinghealthcare.backend.auth.UserAccountRepository;
 import com.bookinghealthcare.backend.dto.LoginRequest;
 import com.bookinghealthcare.backend.dto.LoginResponse;
 import com.bookinghealthcare.backend.dto.RegisterRequest;
+import com.bookinghealthcare.backend.exception.BusinessException;
 import com.bookinghealthcare.backend.auth.Role;
 
 import com.bookinghealthcare.backend.auth.UserSimple;
@@ -52,19 +53,24 @@ public class AuthService {
             throw new RuntimeException("Username existed");
         }
 
+        // 2️⃣ Email KHÔNG bắt buộc
+        if (req.getEmail() != null && !req.getEmail().isBlank()) {
+            if (userAccountRepository.findByEmail(req.getEmail()).isPresent()) {
+                throw new BusinessException("Email đã tồn tại, hãy đăng nhập");
+            }
+            }
+
         UserAccount acc = new UserAccount();
         acc.setUsername(req.getUsername());
         acc.setFullName(req.getFullName());
         acc.setPhone(req.getPhone());
         acc.setPassword(passwordEncoder.encode(req.getPassword()));
         acc.setRole(Role.USER);
-
-        //  Email KHÔNG bắt buộc SAI QUÁ THÌ XOÁ
-        if (req.getEmail() != null && !req.getEmail().isBlank()) {
-            acc.setEmail(req.getEmail());
-        } else {
-            acc.setEmail(null);
-        }
+        acc.setEmail(
+            (req.getEmail() != null && !req.getEmail().isBlank())
+                ? req.getEmail()
+                : null
+        );
         acc.setWelcomeEmailSent(false);
 
         userAccountRepository.save(acc);
@@ -83,7 +89,6 @@ public class AuthService {
         // ===========================
         if (acc.getEmail() != null && !acc.getEmail().isBlank()) {
             try {
-                // dùng chung template với lúc book cho guest
                 emailService.sendUserAccountEmail(
                         acc.getEmail(),
                         acc.getFullName(),
