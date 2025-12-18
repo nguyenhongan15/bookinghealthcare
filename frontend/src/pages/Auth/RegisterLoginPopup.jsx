@@ -92,7 +92,7 @@ export default function RegisterLoginPopup({ onClose, onUpdated }) {
       onUpdated();
       onClose();
     } catch (err) {
-      setRegErr("Tên đăng nhập đã tồn tại hoặc lỗi đăng ký!");
+      setRegErr("Email đã tồn tại, đăng nhập hoặc dùng email khác");
     }
   };
 
