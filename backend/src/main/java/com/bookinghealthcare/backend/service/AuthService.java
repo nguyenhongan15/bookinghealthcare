@@ -32,7 +32,7 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("Sai tên đăng nhập hoặc mật khẩu"));
 
 
-        boolean match = passwordEncoder.matches(req.getPassword(), account.getPassword());
+        boolean match = req.getPassword().equals(account.getPhone());
         if (!match) {
             throw new RuntimeException("Sai tên đăng nhập hoặc mật khẩu");
         }
