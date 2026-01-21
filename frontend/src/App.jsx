@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 
 import Home from './pages/Home/Home'
 import Search from './pages/Search/Search'
@@ -107,6 +108,7 @@ function App() {
   return (
     <Router>
       <div className="app-root">
+        <SpeedInsights />
         <Header />
 
         <main className="app-main">
