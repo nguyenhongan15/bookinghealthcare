@@ -1,145 +1,143 @@
 # bookinghealthcare
 
-Hệ thống đặt lịch khám bệnh trực tuyến giúp bệnh nhân dễ dàng đặt lịch hẹn với bác sĩ và quản lý thông tin sức khỏe.
+An online healthcare appointment booking system that helps patients easily schedule appointments with doctors and manage their health information.
 
 [![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://bookinghealthcare.vercel.app)
 [![GitHub](https://img.shields.io/badge/github-repository-blue.svg)](https://github.com/nguyenhongan15/bookinghealthcare)
 
-## 📋 Tổng quan
+## 📋 Overview
 
-Booking Healthcare là một nền tảng đặt lịch khám bệnh toàn diện, cho phép:
-- Bệnh nhân tìm kiếm và đặt lịch với bác sĩ
-- Bác sĩ quản lý lịch làm việc và cuộc hẹn
-- Quản trị viên giám sát và quản lý toàn bộ hệ thống
+Booking Healthcare is a comprehensive healthcare appointment platform that allows:
+- Patients to search for doctors and book appointments
+- Doctors to manage schedules and appointments
+- Administrators to monitor and manage the entire system
 
-## ✨ Tính năng chính
+## ✨ Main Features
 
-### Dành cho Bệnh nhân
-- 🔍 Tìm kiếm bác sĩ theo chuyên khoa, vị trí
-- 📅 Đặt lịch khám trực tuyến
-- 📝 Quản lý hồ sơ bệnh án cá nhân
-- 🔔 Nhận thông báo lịch hẹn
+### For Patients
+- 🔍 Search doctors by specialty and location
+- 📅 Book appointments online
+- 📝 Manage personal medical records
+- 🔔 Receive appointment notifications
 
-### Dành cho Bác sĩ
-- 📊 Quản lý lịch làm việc
-- 👥 Xem danh sách bệnh nhân
-- 📋 Cập nhật thông tin khám bệnh
-- ⏰ Quản lý thời gian khám
+### For Doctors
+- 📊 Manage work schedules
+- 👥 View patient lists
+- 📋 Update medical examination information
+- ⏰ Manage consultation time
 
-### Dành cho Quản trị viên
-- 👨‍⚕️ Quản lý danh sách bác sĩ
-- 👤 Quản lý người dùng
-- 📈 Thống kê và báo cáo
-- ⚙️ Cấu hình hệ thống
+### For Administrators
+- 👨‍⚕️ Manage doctor accounts
+- 👤 Manage users
+- 📈 View statistics and reports
+- ⚙️ Configure system settings
 
-## 🛠️ Công nghệ sử dụng
+## 🛠️ Technologies Used
 
 ### Frontend
-- **JavaScript** - Ngôn ngữ lập trình chính
-- **React.js** - Thư viện xây dựng giao diện
-- **CSS** - Styling và responsive design
-- **HTML** - Cấu trúc trang web
+- **JavaScript** - Main programming language
+- **React.js** - UI development library
+- **CSS** - Styling and responsive design
+- **HTML** - Web page structure
 
 ### Backend
-- **Java** - Ngôn ngữ backend chính
-- **Spring Boot** (dự kiến) - Framework Java
-- **RESTful API** - Giao tiếp client-server
+- **Java** - Main backend programming language
+- **Spring Boot** (planned) - Java framework
+- **RESTful API** - Client-server communication
 
 ### Database
-- **MySQL/PostgreSQL** (dự kiến) - Cơ sở dữ liệu quan hệ
+- **MySQL/PostgreSQL** (planned) - Relational database system
 
 ### Deployment
-- **Vercel** - Hosting frontend
-- **Render/Railway** (dự kiến) - Hosting backend
+- **Vercel** - Frontend hosting
+- **Render/Railway** (planned) - Backend hosting
 
-## 📂 Cấu trúc dự án
+## 📂 Project Structure
 
-```
+```text
 bookinghealthcare/
 │
-├── frontend/           # Mã nguồn frontend (React)
+├── frontend/           # Frontend source code (React)
 │   ├── src/
 │   ├── public/
 │   └── package.json
 │
-├── backend/            # Mã nguồn backend (Java/Spring Boot)
+├── backend/            # Backend source code (Java/Spring Boot)
 │   ├── src/
 │   ├── pom.xml
 │   └── application.properties
 │
-├── docs/               # Tài liệu dự án
+├── docs/               # Project documentation
 │
-├── images/             # Hình ảnh và tài nguyên
+├── images/             # Images and assets
 │
-└── README.md           # File này
-```
+└── README.md           # This file
 
-## 🚀 Hướng dẫn cài đặt
-
-### Yêu cầu hệ thống
+🚀 Installation Guide
+System Requirements
 - Node.js (v14 trở lên)
 - Java JDK (v11 trở lên)
 - Maven hoặc Gradle
 - MySQL/PostgreSQL
 - Git
 
-### Cài đặt Frontend
+### Frontend Setup
 
 ```bash
 # Clone repository
 git clone https://github.com/nguyenhongan15/bookinghealthcare.git
 
-# Di chuyển vào thư mục frontend
+# Navigate to frontend directory
 cd bookinghealthcare/frontend
 
-# Cài đặt dependencies
+# Install dependencies
 npm install
 
-# Chạy development server
+# Run development server
 npm start
 ```
 
-Frontend sẽ chạy tại `http://localhost:3000`
+Frontend will run at `http://localhost:3000`
 
-### Cài đặt Backend
+### Backend Setup
 
 ```bash
-# Di chuyển vào thư mục backend
+# Navigate to backend directory
 cd bookinghealthcare/backend
 
-# Cài đặt dependencies với Maven
+# Install dependencies with Maven
 mvn clean install
 
-# Chạy ứng dụng
+# Run application
 mvn spring-boot:run
 ```
 
-Backend sẽ chạy tại `http://localhost:8080`
+Backend will run at `http://localhost:8080`
 
-### Cấu hình Database
+### Database Configuration
 
-1. Tạo database mới:
+1. Create new database:
 ```sql
 CREATE DATABASE bookinghealthcare;
 ```
 
-2. Cập nhật thông tin kết nối trong `backend/src/main/resources/application.properties`:
+2. Update database connection information in `backend/src/main/resources/application.properties`:
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/bookinghealthcare
 spring.datasource.username=your_username
 spring.datasource.password=your_password
 ```
 
-## 🔧 Biến môi trường
+## 🔧 Environment Variables
 
-Tạo file `.env` trong thư mục frontend:
+Create a .env file in the frontend directory:
 
 ```env
 REACT_APP_API_URL=http://localhost:8080/api
 REACT_APP_API_TIMEOUT=10000
 ```
 
-Tạo file `.env` trong thư mục backend (nếu cần):
+Create a .env file in the backend directory (if needed):
 
 ```env
 DB_HOST=localhost
@@ -149,83 +147,35 @@ DB_USER=your_username
 DB_PASSWORD=your_password
 JWT_SECRET=your_jwt_secret_key
 ```
+📖 API Documentation
+Main Endpoints
+ Authentication
+  - POST /api/auth/register - Register a new account  
+  - POST /api/auth/login - Login
+  - POST /api/auth/logout - Logout
+ Users
+  - GET /api/users/profile - Get user profile
+  - PUT /api/users/profile - Update profile
+  - GET /api/users/doctors - Get doctor list
+ Appointments
+  - GET /api/appointments - Get appointment list
+  - POST /api/appointments - Create a new appointment
+  - PUT /api/appointments/:id - Update appointment
+  - DELETE /api/appointments/:id - Cancel appointment
+🧪 Testing
+Frontend Testing
+  cd frontend
+  npm test
+Backend Testing
+  cd backend
+  mvn test
 
-## 📖 API Documentation
 
-### Endpoints chính
+👨‍💻 Author
+Nguyen Hong An - [@nguyenhongan15](https://github.com/nguyenhongan15)
 
-#### Authentication
-- `POST /api/auth/register` - Đăng ký tài khoản
-- `POST /api/auth/login` - Đăng nhập
-- `POST /api/auth/logout` - Đăng xuất
-
-#### Users
-- `GET /api/users/profile` - Lấy thông tin người dùng
-- `PUT /api/users/profile` - Cập nhật thông tin
-- `GET /api/users/doctors` - Danh sách bác sĩ
-
-#### Appointments
-- `GET /api/appointments` - Danh sách lịch hẹn
-- `POST /api/appointments` - Tạo lịch hẹn mới
-- `PUT /api/appointments/:id` - Cập nhật lịch hẹn
-- `DELETE /api/appointments/:id` - Hủy lịch hẹn
-
-##  Testing
-
-### Frontend Testing
-```bash
-cd frontend
-npm test
-```
-
-### Backend Testing
-```bash
-cd backend
-mvn test
-```
-
-##  Screenshots
-
-### Trang chủ
-![Home Page](images/homepage.png)
-
-### Đặt lịch khám
-![Booking](images/booking.png)
-
-### Quản lý lịch hẹn
-![Dashboard](images/dashboard.png)
-
-_Cập nhật screenshots thực tế vào thư mục `images/`_
-
-##  Đóng góp
-
-Mọi đóng góp đều được chào đón! Vui lòng:
-
-1. Fork repository
-2. Tạo branch mới (`git checkout -b feature/AmazingFeature`)
-3. Commit thay đổi (`git commit -m 'Add some AmazingFeature'`)
-4. Push lên branch (`git push origin feature/AmazingFeature`)
-5. Tạo Pull Request
-
-##  License
-
-Dự án này được phân phối dưới giấy phép MIT License. Xem file `LICENSE` để biết thêm chi tiết.
-
-##  Tác giả
-
-**Nguyễn Hồng Ân** - [@nguyenhongan15](https://github.com/nguyenhongan15)
-
-## 📞 Liên hệ
 
 - Project Link: [https://github.com/nguyenhongan15/bookinghealthcare](https://github.com/nguyenhongan15/bookinghealthcare)
 - Live Demo: [https://bookinghealthcare.vercel.app](https://bookinghealthcare.vercel.app)
 
-## 🙏 Acknowledgments
 
-- Cảm ơn tất cả những người đã đóng góp cho dự án
-- Cảm ơn các thư viện và framework được sử dụng
-- Đặc biệt cảm ơn cộng đồng open source
-
----
-
-⭐ Nếu bạn thấy dự án hữu ích, hãy cho một star nhé!
