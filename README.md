@@ -162,11 +162,14 @@ Main Endpoints
   - POST /api/appointments - Create a new appointment
   - PUT /api/appointments/:id - Update appointment
   - DELETE /api/appointments/:id - Cancel appointment
-🧪 Testing
-Frontend Testing
+    
+## 🧪 Testing
+
+# Frontend Testing
   cd frontend
   npm test
-Backend Testing
+
+# Backend Testing
   cd backend
   mvn test
 
